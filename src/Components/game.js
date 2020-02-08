@@ -27,9 +27,8 @@ class Game extends React.Component {
     render() {
         return (
             <div className="board">{this.state.board.map((value) => {
-                console.log(value);
                 return (
-                    <SquareItem key={value}></SquareItem>
+                    <SquareItem value={value} key={value}></SquareItem>
                 )
             })}
             </div>
@@ -38,8 +37,11 @@ class Game extends React.Component {
 }
 
 function SquareItem(props) {
+    const handleSelect = () => {
+        console.log(props.value);
+    }
     return (
-        <div className="square">{props.value}</div>
+        <div className="square" onClick={handleSelect}></div>
     )
 }
 
