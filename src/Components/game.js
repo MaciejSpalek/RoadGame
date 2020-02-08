@@ -1,48 +1,65 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-class Game extends React.Component {
+class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             board: [],
             dimension: 10
         }
-    } componentDidMount() {
+    } 
+    componentDidMount() {
         this.setState({
             board: this.myList()
         })
     }
     myList() {
         let list = []
-        for (let i = 0; i < this.state.dimension; i++) {
-            for (let j = 0; j < this.state.dimension; j++) {
-                // console.log(this.state.board[i][j]);
-                // this.setState({board: this.state.board.push(<div className="square" key={i+'-'+j}></div>)})
-                list.push(i + '-' + j)
-                // this.setState({ board: <div className="square" key={i + `-` + j} ></div> })
+        for (let row = 0; row < this.state.dimension; row++) {
+            for (let col = 0; col < this.state.dimension; col++) {
+                list.push(row + '-' + col)
             }
         }
         return list;
     }
+    
     render() {
         return (
-            <div className="board">{this.state.board.map((value) => {
-                return (
-                    <SquareItem value={value} key={value}></SquareItem>
-                )
+            <div className="board">
+                {this.state.board.map((value) => {
+                    return (
+                        <Square value={value} key={value}></Square>
+                    )
             })}
             </div>
         )
     }
 }
 
-function SquareItem(props) {
-    const handleSelect = () => {
-        console.log(props.value);
+class Square extends React.Component  {
+    constructor(props) {
+        super(props);
+        this.handleSelect = this.handleSelect.bind(this); 
     }
-    return (
-        <div className="square" onClick={handleSelect}></div>
-    )
+
+    handleSelect() {
+        // console.log(this.props.value);
+        console.log(this.getColumn());
+    }
+
+    getRow() {
+        return this.props.value.substr(0, 1);
+    }
+
+    getColumn() {
+        return this.props.value.substr(2, 1);
+    }
+
+    render() {
+        return (
+            <div className="square" onClick={this.handleSelect}></div>
+        )
+    }
 }
 
-export default Game;
+export default Board;
