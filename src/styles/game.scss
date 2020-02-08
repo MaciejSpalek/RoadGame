@@ -1,16 +1,31 @@
+.game {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	justify-content: center;
+}
+.game__start-button {
+	margin: 1rem;
+	height: 70px;
+	width: 300px;
+	background-color: rebeccapurple;
+	align-self: center;
+}
+
 .board {
-    display: grid;
-    grid-template-rows: repeat(10, 1fr);
-    grid-template-columns: repeat(10, 1fr);
-    width: 500px;
-    height: 500px;
-    border: 1px solid black;
+	align-self: center;
+	display: grid;
+	grid-template-rows: repeat(10, 1fr);
+	grid-template-columns: repeat(10, 1fr);
+	width: 500px;
+	height: 500px;
+	border: 1px solid black;
 }
 
 .square {
-    border: 1px solid black;
+	border: 1px solid black;
 }
 
 .firstSquare {
-    background-color: green;
+	background-color: green;
 }

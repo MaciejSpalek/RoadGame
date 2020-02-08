@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Board extends Component {
+class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -8,13 +8,12 @@ class Board extends Component {
             dimension: 10,
             firstSquare: null
         }
-        this.buttonListener = this.buttonListener.bind(this); 
-    } 
+        this.buttonListener = this.buttonListener.bind(this);
+    }
     componentDidMount() {
         this.setState({
             board: this.myList()
         })
-        
     }
     myList() {
         let list = []
@@ -26,30 +25,30 @@ class Board extends Component {
         return list;
     }
     getRandom() {
-        return Math.round(Math.random()*this.state.board.length)
+        return this.state.board[Math.round(Math.random() * this.state.board.length)]
     }
     drawFirstSquare() {
-        return this.state.board[this.getRandom()];
+        let randomFiled = this.getRandom();
+        this.setState({
+            firstSquare: randomFiled
+        }, console.log(randomFiled))
     }
     buttonListener() {
         this.drawFirstSquare();
-        this.setState(prevState => ({
-            firstSquare: prevState.firstSquare
-        }))
-        console.log(this.state.firstSquare);
     }
     render() {
-        
+
         return (
-            <>
-            <div className="board">
-                {this.state.board.map((value) => {
-                    return (
-                        <Square value={value} key={value}></Square>
-                    )
-            })}
+            <><div className="game">
+                <div className="board">
+                    {this.state.board.map((value) => {
+                        return (
+                            <Square value={value} key={value}></Square>
+                        )
+                    })}
+                </div>
+                <button className="game__start-button" onClick={this.buttonListener}> Start </button>
             </div>
-            <button onClick = {this.buttonListener}> Start </button>
             </>
         )
     }
@@ -61,17 +60,17 @@ class Board extends Component {
 
 
 
-class Square extends Component {
+class Square extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSelect = this.handleSelect.bind(this); 
+        this.handleSelect = this.handleSelect.bind(this);
     }
     handleSelect() {
         // console.log(this.getColumn());
-        
+
     }
     getRandom() {
-        return Math.round(Math.random()*3)
+        return Math.round(Math.random() * 3)
     }
     getRow() {
         return this.props.value.substr(0, 1);
