@@ -1,12 +1,12 @@
 import React from 'react';
 // import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import Board from './Components/game'
 
 function App() {
   return (
     <div className="App">
-      <Board/>
+      <Board />
     </div>
   );
 }
