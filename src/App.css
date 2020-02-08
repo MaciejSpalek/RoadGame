@@ -1,4 +1,7 @@
+@import './styles/game.scss';
+
 .App {
+  
   text-align: center;
 }
 
