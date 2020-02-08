@@ -7,66 +7,40 @@ class Game extends React.Component {
             board: [],
             dimension: 10
         }
+    } componentDidMount() {
+        this.setState({
+            board: this.myList()
+        })
     }
-    // w momencie włączenia komponentu wyrenderowania go, odpala się
-    // componentDidMount() {
-        // this.createBoard();
-    // }
-    // function createGameField(array, board, dimension) {
-    //     for (let r = 0; r < dimension; r++) {
-    //         array[r] = [];
-    //         for (let c = 0; c < dimension; c++) {
-    //             array[r][c] = $("<div>").addClass('square');
-    //             array[r][c].data('r', r);
-    //             array[r][c].data('c', c);
-    //             array[r][c].data('value', 0); // 0 - puste pole, 1 - otoczenie statku, 2 - element statku
-    //             $(board).append(array[r][c]);
-    //         }
-    //     }
-    // }
-    // createBoard() {
-    //     for (let row = 0; row < this.state.dimension; row++) {
-    //         for (let col = 0; col < this.state.dimension; col++) {
-    //             this.setState({
-    //                 board: [col]
-    //             });
-    //            console.log(`[${row}][${col}]`);
-    //         }
-    //     }
-    //     // return this.state.board;
-    // }
-
-    // createBoard() {
-    //     let list = []
-    //     for(row = 0; row < this.state.dimension; row++){
-    //         for(col = 0; col < this.state.dimension; col++){
-    //             console.log(db[i][j]);
-    //             list.push(<li key={i+'-'+j}>{db[i][j]}</li>)
-    //             // when rendering list of array elements, wee need unique key
-    //         }
-    //     }
-    //     return list
-    // }
-
     myList() {
-        
-        for(let i = 0; i < this.state.dimension; i++){
-           for(let j = 0; j < this.state.dimension; j++){
+        let list = []
+        for (let i = 0; i < this.state.dimension; i++) {
+            for (let j = 0; j < this.state.dimension; j++) {
                 // console.log(this.state.board[i][j]);
                 // this.setState({board: this.state.board.push(<div className="square" key={i+'-'+j}></div>)})
-             this.state.board.push(<div className="square" key={i+'-'+j}></div>)
-           }
+                list.push(i + '-' + j)
+                // this.setState({ board: <div className="square" key={i + `-` + j} ></div> })
+            }
         }
-        return this.state.board;
-      }
-      
+        return list;
+    }
     render() {
-        console.log(this.state.board);
         return (
-            <div className="board"> {this.myList()} </div>
-            
+            <div className="board">{this.state.board.map((value) => {
+                console.log(value);
+                return (
+                    <SquareItem key={value}></SquareItem>
+                )
+            })}
+            </div>
         )
-    }  
+    }
+}
+
+function SquareItem(props) {
+    return (
+        <div className="square">{props.value}</div>
+    )
 }
 
 export default Game;
