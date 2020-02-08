@@ -37,13 +37,17 @@ class Board extends React.Component {
         this.drawFirstSquare();
     }
     render() {
-
+        const { firstSquare } = this.state;
         return (
             <><div className="game">
                 <div className="board">
                     {this.state.board.map((value) => {
                         return (
-                            <Square value={value} key={value}></Square>
+                            <Square
+                                firstSquare={firstSquare === value ? firstSquare : null}
+                                value={value}
+                                key={value}>
+                            </Square>
                         )
                     })}
                 </div>
@@ -67,6 +71,7 @@ class Square extends React.Component {
     }
     handleSelect() {
         // console.log(this.getColumn());
+        console.log(this.props.firstSquare);
 
     }
     getRandom() {
@@ -79,8 +84,9 @@ class Square extends React.Component {
         return this.props.value.substr(2, 1);
     }
     render() {
+        const { firstSquare, value } = this.props
         return (
-            <div className="square" onClick={this.handleSelect}></div>
+            <div className={firstSquare === value ? "blackSquare" : "square"} onClick={this.handleSelect}></div>
         )
     }
 }
