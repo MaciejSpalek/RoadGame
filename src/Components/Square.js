@@ -11,10 +11,10 @@ export class Square extends React.Component {
   getDirection() {
     return Math.round(Math.random() * 3);
   }
- 
+
   render() {
-    const { firstSquare, row, col, key } = this.props;
-   
+    const { firstSquare, row, col } = this.props;
+
     return (<div className={firstSquare === `${row}${col}` ? "startSquare" : "square"} onClick={this.handleSelect} col={col} row={row}></div>);
   }
 }
