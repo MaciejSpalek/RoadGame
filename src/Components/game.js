@@ -9,12 +9,10 @@ class Board extends React.Component {
       board: [],
       road: [],
       dimension: 10,
-      amountOfSquares: 5,
+      amountOfSquares: 10,
       firstSquare: null,
     };
-
   }
-
   componentDidMount() {
     this.setState({
       board: this.createBoard()
@@ -37,11 +35,7 @@ class Board extends React.Component {
     let randomFiled = this.getRandom();
     await this.setState({ firstSquare: randomFiled })
     await this.setRoad(randomFiled)
-  }
-
-  isFirstSquare(row, col) {
-
-    return this.state.firstSquare == `${row}${col}`;
+    console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`)
   }
 
   setRoad = async firstSquare => {
@@ -54,19 +48,17 @@ class Board extends React.Component {
 
   isBusySquare(roadArray, row, col) {
     for (let i = 0; i < roadArray.length; i++) {
-      if (roadArray[i] == `${row}${col}`) {
+      if (roadArray[i] === `${row}${col}` || this.state.firstSquare === `${row}${col}`) {
         return true;
       }
     }
   }
 
   setSingleSquare(roadArray, firstSquare, i) {
-    console.log(`~~~ START FUNC ~~~`);
     const { board } = this.state;
     const direction = this.getDirection();
     let row;
     let col;
-
 
     if (i < 1) {
       row = +firstSquare.substr(0, 1);
@@ -75,80 +67,52 @@ class Board extends React.Component {
       row = +roadArray[roadArray.length - 1].substr(0, 1);
       col = +roadArray[roadArray.length - 1].substr(1, 1);
     }
-
-
     if (direction === 0) {
-
-      if (row - 1 >= 0 && !this.isBusySquare(roadArray, row - 1, col) && !this.isFirstSquare(row - 1, col)) {
-        console.log("up" + firstSquare)
+      if (row - 1 >= 0 && !this.isBusySquare(roadArray, row - 1, col)) {
         firstSquare = board[row - 1][col]
         roadArray.push(firstSquare)
-        console.log(roadArray)
-      }
-
-      else {
-        console.log(`up - return function`)
+      } else {
         return this.setSingleSquare(roadArray, firstSquare, i)
-
       }
-    }
-
-    else if (direction === 1) {
-      if (col + 1 <= 9 && !this.isBusySquare(roadArray, row, col + 1) && !this.isFirstSquare(row, col + 1)) {
-        console.log("right" + firstSquare)
+    } else if (direction === 1) {
+      if (col + 1 <= 9 && !this.isBusySquare(roadArray, row, col + 1)) {
         firstSquare = board[row][col + 1];
         roadArray.push(firstSquare)
-        console.log(roadArray)
-      }
-      else {
-        console.log(`right - return function`)
+      } else {
         return this.setSingleSquare(roadArray, firstSquare, i)
       }
-    }
-
-    else if (direction === 2) {
-      if (row + 1 <= 9 && !this.isBusySquare(roadArray, row + 1, col) && !this.isFirstSquare(row + 1, col)) {
-        console.log("down" + firstSquare)
+    } else if (direction === 2) {
+      if (row + 1 <= 9 && !this.isBusySquare(roadArray, row + 1, col)) {
         firstSquare = board[row + 1][col]
         roadArray.push(firstSquare)
-        console.log(roadArray)
-      }
-      else {
-        console.log(`down - return function`)
+      } else {
         return this.setSingleSquare(roadArray, firstSquare, i)
       }
-    }
-
-    else if (direction === 3) {
-      if (col - 1 >= 0 && !this.isBusySquare(roadArray, row, col - 1) && !this.isFirstSquare(row, col - 1)) {
-        console.log("left" + firstSquare)
+    } else if (direction === 3) {
+      if (col - 1 >= 0 && !this.isBusySquare(roadArray, row, col - 1)) {
         firstSquare = board[row][col - 1]
         roadArray.push(firstSquare)
-        console.log(roadArray)
-      }
-      else {
-        console.log(`left - return function`)
+      } else {
         return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
-
   }
 
   getDirection() {
     return Math.round(Math.random() * 3);
   }
 
-
   buttonListener() {
     this.drawFirstSquare();
   }
 
   renderSquares() {
-    const { firstSquare, board } = this.state;
+    const { firstSquare, board, road } = this.state;
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
           <Square
+            partOfRoad={road.filter(part => part === col ? part : null)}
             firstSquare={firstSquare === col ? firstSquare : null}
             key={`${i}${j}`}
             row={i}
@@ -161,16 +125,14 @@ class Board extends React.Component {
   }
   render() {
     return (
-      <>
-        <div className="game">
-          <div className="board">
-            {
-              this.renderSquares()
-            }
-          </div>
-          <button className="game__start-button" onClick={this.buttonListener}> Start </button>
+      <div className="game">
+        <div className="board">
+          {
+            this.renderSquares()
+          }
         </div>
-      </>
+        <button className="game__start-button" onClick={this.buttonListener}> Start </button>
+      </div>
     );
   }
 }

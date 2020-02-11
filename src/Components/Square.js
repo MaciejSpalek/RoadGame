@@ -13,8 +13,17 @@ export class Square extends React.Component {
   }
 
   render() {
-    const { firstSquare, row, col } = this.props;
-
-    return (<div className={firstSquare === `${row}${col}` ? "startSquare" : "square"} onClick={this.handleSelect} col={col} row={row}></div>);
+    const { firstSquare, row, col, partOfRoad } = this.props;
+    parseInt(partOfRoad)
+    return (<div
+      className={`
+        square
+        ${firstSquare === `${row}${col}` ? "startSquare" : ""}
+        ${partOfRoad[0] === `${row}${col}` ? "drawRoad" : ""}
+      `}
+      onClick={this.handleSelect}
+      col={col}
+      row={row} >
+    </div>);
   }
 }
