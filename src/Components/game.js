@@ -34,24 +34,16 @@ class Board extends React.Component {
   getRandom() {
     return this.state.board[Math.round(Math.random() * 9)][Math.round(Math.random() * 9)];
   }
-  componentDidUpdate() {
 
-    // for (let i = 0; i < this.state.amountOfSquares; i++) {
-    //   this.getNewSquare(this.state.firstSquare)
-    // }
-    //
-    let randomFiled = this.getRandom();
-    if (this.state.firstSquare === null) {
-      this.setState({ firstSquare: randomFiled });
-    }
-  }
 
   drawFirstSquare() {
-    // console.log(randomFiled);
-    console.log(this.state.firstSquare);
 
+    let randomFiled = this.getRandom();
+    // if (this.state.firstSquare === null) {
+    this.setState({ firstSquare: randomFiled });
+    this.getNewSquare(randomFiled);
 
-    this.getNewSquare(this.state.firstSquare);
+    // }
 
   }
 
@@ -59,71 +51,73 @@ class Board extends React.Component {
     return Math.round(Math.random() * 3);
   }
 
-  getNewSquare(lastSquare) {
+  getNewSquare = async (lastSquare) => {
+
     const { road, board } = this.state;
-    // for (let i = 0; i < this.state.amountOfSquares; i++) {
-    // }
-
     const direction = this.getDirection();
-    const row = lastSquare.substr(0, 1);
-    const col = lastSquare.substr(1, 1);
 
-    // console.log(lastSquare, row, col)
+    let roadFromLoop = []
+    let squarePosition = null;
 
-    if (direction === 0) {
-      console.log("up")
-      if (row - 1 <= 0) {
-        road.push(board[row - 1][col])
-        this.setState({
-          firstSquare: board[row - 1][col]
-        })
-        console.log(this.state.firstSquare);
-      } else {
-        this.getNewSquare(lastSquare)
+
+    for (let i = 0; i < this.state.amountOfSquares; i++) {
+      if (squarePosition === null) {
+        squarePosition = lastSquare
       }
-    }
-    else if (direction === 1) {
-      console.log("right")
-      if (col + 1 <= 9) {
-        road.push(board[row][col + 1])
-        this.setState({
-          firstSquare: board[row][col + 1]
-        })
-        console.log(this.state.firstSquare);
-
-      } else {
-        this.getNewSquare(lastSquare)
+      const row = +squarePosition.substr(0, 1);
+      const col = +squarePosition.substr(1, 1);
+      if (direction === 0) {
+        console.log("up")
+        if (row - 1 <= 0) {
+          roadFromLoop = [...roadFromLoop, board[row - 1][col]]
+          squarePosition = board[row - 1][col]
+          console.log(squarePosition);
+        } else {
+          this.getNewSquare(squarePosition)
+        }
       }
-    }
-    else if (direction === 2) {
-      console.log("down")
-      if (row + 1 <= 9) {
-        road.push(board[row + 1][col])
-        this.setState({
-          firstSquare: board[row + 1][col]
-        })
-        console.log(this.state.firstSquare);
-
-      } else {
-        this.getNewSquare(lastSquare)
+      else if (direction === 1) {
+        console.log("right")
+        if (col + 1 <= 9) {
+          roadFromLoop = [...roadFromLoop, board[row][col + 1]]
+          squarePosition = board[row][col + 1]
+          console.log(squarePosition);
+        } else {
+          this.getNewSquare(squarePosition)
+        }
       }
-    }
-    else {
-      console.log("left")
-      if (col - 1 >= 0) {
-        road.push(board[row][col - 1])
-        this.setState({
-          firstSquare: board[row][col - 1]
-        })
-        console.log(this.state.firstSquare);
-
-      } else {
-        this.getNewSquare(lastSquare)
+      else if (direction === 2) {
+        console.log("down")
+        if (row + 1 <= 9) {
+          roadFromLoop = [...roadFromLoop, board[row + 1][col]]
+          squarePosition = board[row + 1][col]
+          console.log(squarePosition);
+        } else {
+          this.getNewSquare(squarePosition)
+        }
       }
+      else {
+        console.log("left")
+        if (col - 1 >= 0) {
+          roadFromLoop = [...roadFromLoop, board[row][col - 1]]
+          squarePosition = board[row][col - 1]
+          console.log(squarePosition);
+        } else {
+          this.getNewSquare(squarePosition)
+        }
+      }
+
+
     }
-    console.log(this.state.firstSquare);
-    return this.state.firstSquare
+    console.log(roadFromLoop);
+
+    await this.setState({
+      road: roadFromLoop
+    })
+    console.log(road);
+
   }
+
 
 
   buttonListener() {
