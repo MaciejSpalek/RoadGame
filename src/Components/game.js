@@ -9,6 +9,7 @@ class Board extends React.Component {
       board: [],
       road: [],
       dimension: 10,
+      duration: 1000,
       amountOfSquares: 7,
       firstSquare: null
     };
@@ -36,18 +37,16 @@ class Board extends React.Component {
   drawFirstSquare = async () => {
     let randomFiled = this.getRandom();
     await this.setState({ firstSquare: randomFiled });
-    await this.setRoad(randomFiled);
+    await this.setRoad(this.state.firstSquare);
     console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`);
-  };
-
+  }
   setRoad = async firstSquare => {
     const roadArray = [];
     for (let i = 0; i < this.state.amountOfSquares; i++) {
       await this.setSingleSquare(roadArray, firstSquare, i);
     }
     await this.setState({ road: roadArray });
-  };
-
+  }
   isBusySquare(roadArray, row, col) {
     for (let i = 0; i < roadArray.length; i++) {
       if (
@@ -58,7 +57,6 @@ class Board extends React.Component {
       }
     }
   }
-
   setSingleSquare(roadArray, firstSquare, i) {
     const { board } = this.state;
     const direction = this.getDirection();
@@ -166,38 +164,43 @@ class Board extends React.Component {
       }
     }
   }
-
   getDirection() {
     return Math.round(Math.random() * 7);
   }
-
-  buttonListener() {
-    this.drawFirstSquare();
+  buttonListener = async () => {
+    await this.setState({
+      road: [],
+      firstSquare: null
+    })
+    await this.drawFirstSquare();
   }
+  
 
-  renderSquares() {
-    const { firstSquare, board, road } = this.state;
+  renderBoardAndRoad() {
+    const { firstSquare, board, road } = this.state
+    let duration = 1000;
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
           <Square
-            partOfRoad={road.filter(part => (part === col ? part : null))}
-            firstSquare={firstSquare === col ? firstSquare : null}
-            key={`${i}${j}`}
-            row={i}
-            col={j}
+            partOfRoad = { road.filter(part => (part === col ? part : null)) }
+            duration = { road.map(part => (part === col ? duration += 3000: null)) }
+            firstSquare = { firstSquare === col ? firstSquare : null }
+            key = { `${i}${j}` }
+            row = { i }
+            col = { j }
           ></Square>
         );
       });
     });
   }
+
   render() {
     return (
       <div className="game">
-        <div className="board">{this.renderSquares()}</div>
+        <div className="board">{this.renderBoardAndRoad()}</div>
         <button className="game__start-button" onClick={this.buttonListener}>
-          {" "}
-          START{" "}
+          START
         </button>
       </div>
     );
