@@ -7,38 +7,28 @@ export class Square extends React.Component {
       draw: "",
     }
     this.timer = null;
-
     this.handleSelect = this.handleSelect.bind(this);
   }
   handleSelect() {
-    // console.log(this.props.firstSquare);
-    // console.log(this.props.partOfRoad);
+    console.log(this.props.firstSquare);
+    console.log(this.props.partOfRoad);
   }
   componentDidUpdate() {
     this.updateRoad()
-
+    console.log(this.timer);
   }
-  async wait(duration) {
-
-
+  wait(duration) {
     this.timer = setTimeout(() => {
       this.setState({
         draw: "drawRoad"
       })
-      // console.log(duration);
-
     }, duration);
-    // this.clearWait()
-    if (this.timer) {
-      console.log(this.timer);
-      if (this.timer > 40) {
-        clearTimeout(this.timer)
-      }
+    if (this.timer > 40) {
+      this.clearWait()
     }
   }
-
-  clearWait() {
-
+  clearWait = () => {
+    window.clearTimeout(this.timer)
   }
   updateRoad() {
     const { row, col, partOfRoad, duration } = this.props;
@@ -63,7 +53,6 @@ export class Square extends React.Component {
       </div >
     );
   }
-
   render() {
     return (
       this.renderSquares()
