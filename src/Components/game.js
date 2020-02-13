@@ -9,10 +9,10 @@ class Board extends React.Component {
       board: [],
       road: [],
       dimension: 10,
-      duration: 1000,
+      time: 500,
       amountOfSquares: 7,
       firstSquare: null
-    };
+    }
   }
   componentDidMount() {
     this.setState({
@@ -43,7 +43,7 @@ class Board extends React.Component {
   setRoad = async firstSquare => {
     const roadArray = [];
     for (let i = 0; i < this.state.amountOfSquares; i++) {
-      await this.setSingleSquare(roadArray, firstSquare, i);
+      await this.setSingleSquare(roadArray,  firstSquare, i);
     }
     await this.setState({ road: roadArray });
   }
@@ -57,9 +57,10 @@ class Board extends React.Component {
       }
     }
   }
-  setSingleSquare(roadArray, firstSquare, i) {
+  setSingleSquare(roadArray,  firstSquare, i) {
     const { board } = this.state;
     const direction = this.getDirection();
+
     let row;
     let col;
 
@@ -91,7 +92,7 @@ class Board extends React.Component {
         firstSquare = board[row - 1][col + 1];
         roadArray.push(firstSquare);
       } else {
-        return this.setSingleSquare(roadArray, firstSquare, i);
+        return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
 
@@ -101,7 +102,7 @@ class Board extends React.Component {
         firstSquare = board[row][col + 1];
         roadArray.push(firstSquare);
       } else {
-        return this.setSingleSquare(roadArray, firstSquare, i);
+        return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
     // right - down
@@ -114,7 +115,7 @@ class Board extends React.Component {
         firstSquare = board[row + 1][col + 1];
         roadArray.push(firstSquare);
       } else {
-        return this.setSingleSquare(roadArray, firstSquare, i);
+        return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
     // down
@@ -123,7 +124,7 @@ class Board extends React.Component {
         firstSquare = board[row + 1][col];
         roadArray.push(firstSquare);
       } else {
-        return this.setSingleSquare(roadArray, firstSquare, i);
+        return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
     // left - down
@@ -136,7 +137,7 @@ class Board extends React.Component {
         firstSquare = board[row + 1][col - 1];
         roadArray.push(firstSquare);
       } else {
-        return this.setSingleSquare(roadArray, firstSquare, i);
+        return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
 
@@ -146,7 +147,7 @@ class Board extends React.Component {
         firstSquare = board[row][col - 1];
         roadArray.push(firstSquare);
       } else {
-        return this.setSingleSquare(roadArray, firstSquare, i);
+        return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
 
@@ -160,7 +161,7 @@ class Board extends React.Component {
         firstSquare = board[row - 1][col - 1];
         roadArray.push(firstSquare);
       } else {
-        return this.setSingleSquare(roadArray, firstSquare, i);
+        return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
   }
@@ -177,15 +178,14 @@ class Board extends React.Component {
 
 
   renderBoardAndRoad() {
-    const { firstSquare, board, road } = this.state
-    let duration = 1000;
+    const { firstSquare, board, road, time } = this.state
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
           <Square
             road={road}
             partOfRoad={road.filter(part => (part === col ? part : null))}
-            duration={road.map(part => (part === col ? duration += 500 : null))}
+            duration={road.map((square, index) => (square === col ? (index + 1)*time : null))}
             firstSquare={firstSquare === col ? firstSquare : null}
             key={`${i}${j}`}
             row={i}

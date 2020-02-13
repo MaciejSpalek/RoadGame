@@ -1,12 +1,12 @@
 import React from "react";
-import classNames from "classnames"
+import classNames from "classnames";
+
 export class Square extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       draw: "",
     }
-    this.timer = null;
     this.handleSelect = this.handleSelect.bind(this);
   }
   handleSelect() {
@@ -15,29 +15,26 @@ export class Square extends React.Component {
   }
   componentDidUpdate() {
     this.updateRoad()
-    // console.log(this.timer);
   }
+
   wait(duration) {
-    this.timer = setTimeout(() => {
-      this.setState({
+    setTimeout(() => {
+       this.setState({
         draw: "drawRoad"
       })
     }, duration);
-    if (this.timer > 40) {
-      this.clearWait()
-    }
   }
-  clearWait = () => {
-    window.clearTimeout(this.timer)
-  }
+
+
   updateRoad() {
-    const { row, col, partOfRoad, duration, road } = this.props;
-    if (partOfRoad[0] === `${row}${col}`) {
-      duration.filter(dur => partOfRoad[0] === `${row}${col}` && dur ? this.wait(dur) : null)
-    }
+    const { row, col, partOfRoad, duration } = this.props;
+      if(partOfRoad[0] === `${row}${col}` ) {
+        this.wait(duration.filter(el => typeof el == "number" ? el : null)[0]);
+      } 
   }
+
   renderSquares = () => {
-    const { firstSquare, row, col, partOfRoad } = this.props;
+    const { firstSquare, row, col, partOfRoad, duration } = this.props;
     const squareClass = classNames({
       'square': true,
       'startSquare': firstSquare === `${row}${col}`,
@@ -48,6 +45,7 @@ export class Square extends React.Component {
         className={squareClass}
         col={col}
         row={row}
+        duration = {duration}
         onClick={this.handleSelect}
       >
       </div >
