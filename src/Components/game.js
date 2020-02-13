@@ -185,7 +185,7 @@ class Board extends React.Component {
           <Square
             road={road}
             partOfRoad={road.filter(part => (part === col ? part : null))}
-            duration={road.map(part => (part === col ? duration += 3000 : null))}
+            duration={road.map(part => (part === col ? duration += 500 : null))}
             firstSquare={firstSquare === col ? firstSquare : null}
             key={`${i}${j}`}
             row={i}
