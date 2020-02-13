@@ -7,6 +7,7 @@ export class Square extends React.Component {
     this.state = {
       draw: "",
     }
+    this.tick = null
     this.handleSelect = this.handleSelect.bind(this);
   }
   handleSelect() {
@@ -16,23 +17,25 @@ export class Square extends React.Component {
   componentDidUpdate() {
     this.updateRoad()
   }
-
   wait(duration) {
-    setTimeout(() => {
-       this.setState({
+    this.tick = setTimeout(() => {
+      this.setState({
         draw: "drawRoad"
       })
     }, duration);
+    if (this.tick > 50) {
+      this.clearTick()
+    }
   }
-
-
+  clearTick() {
+    window.clearTimeout(this.tick)
+  }
   updateRoad() {
     const { row, col, partOfRoad, duration } = this.props;
-      if(partOfRoad[0] === `${row}${col}` ) {
-        this.wait(duration.filter(el => typeof el == "number" ? el : null)[0]);
-      } 
+    if (partOfRoad[0] === `${row}${col}`) {
+      this.wait(duration.filter(el => typeof el == "number" ? el : null)[0]);
+    }
   }
-
   renderSquares = () => {
     const { firstSquare, row, col, partOfRoad, duration } = this.props;
     const squareClass = classNames({
@@ -45,7 +48,7 @@ export class Square extends React.Component {
         className={squareClass}
         col={col}
         row={row}
-        duration = {duration}
+        duration={duration}
         onClick={this.handleSelect}
       >
       </div >
