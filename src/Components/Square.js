@@ -15,7 +15,7 @@ export class Square extends React.Component {
   }
   componentDidUpdate() {
     this.updateRoad()
-    console.log(this.timer);
+    // console.log(this.timer);
   }
   wait(duration) {
     this.timer = setTimeout(() => {
@@ -31,9 +31,9 @@ export class Square extends React.Component {
     window.clearTimeout(this.timer)
   }
   updateRoad() {
-    const { row, col, partOfRoad, duration } = this.props;
+    const { row, col, partOfRoad, duration, road } = this.props;
     if (partOfRoad[0] === `${row}${col}`) {
-      duration.filter(dur => partOfRoad && dur ? this.wait(dur) : null)
+      duration.filter(dur => partOfRoad[0] === `${row}${col}` && dur ? this.wait(dur) : null)
     }
   }
   renderSquares = () => {
