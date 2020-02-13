@@ -1,72 +1,61 @@
 import React from "react";
-
+import classNames from "classnames"
 export class Square extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      draw: "",
+    }
+    this.timer = null;
     this.handleSelect = this.handleSelect.bind(this);
   }
   handleSelect() {
     console.log(this.props.firstSquare);
     console.log(this.props.partOfRoad);
   }
-
-  // updateRoad(duration) {
-  //   setTimeout(() => {
-  //     console.log(duration);
-  //   }, duration);
-  //   return "drawRoad";
-  // }
-
-  async updateRoad(duration) {
-    await this.timeout(duration)
-    // console.log(duration)
-    return "drawRoad";
+  componentDidUpdate() {
+    this.updateRoad()
+    // console.log(this.timer);
   }
-
-
-  async timeout(ms) {
-    return await new Promise((resolve) => setTimeout(resolve, ms));
+  wait(duration) {
+    this.timer = setTimeout(() => {
+      this.setState({
+        draw: "drawRoad"
+      })
+    }, duration);
+    if (this.timer > 40) {
+      this.clearWait()
+    }
   }
-
-  // delay = (t) => new Promise(resolve => setTimeout(resolve, t));
-  
-  
-  // delay(3000).then(() => console.log('Hello'));
-
-
-  
-  // async updateRoad(duration) {
-  //  await this.delay(duration).then(() => "drawRoad")
-  // }
-
-
-  renderSquares() {
-    const { firstSquare, row, col, partOfRoad, duration } = this.props;
-    // let variable = null;
-    // console.log(partOfRoad[0])
+  clearWait = () => {
+    window.clearTimeout(this.timer)
+  }
+  updateRoad() {
+    const { row, col, partOfRoad, duration, road } = this.props;
+    if (partOfRoad[0] === `${row}${col}`) {
+      duration.filter(dur => partOfRoad[0] === `${row}${col}` && dur ? this.wait(dur) : null)
+    }
+  }
+  renderSquares = () => {
+    const { firstSquare, row, col, partOfRoad } = this.props;
+    const squareClass = classNames({
+      'square': true,
+      'startSquare': firstSquare === `${row}${col}`,
+      'drawRoad': partOfRoad[0] === `${row}${col}` ? this.state.draw : null
+    })
     return (
       <div
-        className = {`
-          square
-          ${firstSquare === `${row}${col}` ? "startSquare" : ""}
-          ${partOfRoad[0] === `${row}${col}`? 
-           this.updateRoad(duration.map(el => typeof el == "number" ? el : null)[0]).then(resolve => {
-             return resolve
-           })
-          : ""} 
-        `
-        }
+        className={squareClass}
         col={col}
         row={row}
-        duration={duration}
         onClick={this.handleSelect}
       >
-        {}
-      </div>
+      </div >
     );
   }
-
   render() {
-    return this.renderSquares();
+    return (
+      this.renderSquares()
+    )
   }
 }

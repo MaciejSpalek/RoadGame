@@ -174,7 +174,7 @@ class Board extends React.Component {
     })
     await this.drawFirstSquare();
   }
-  
+
 
   renderBoardAndRoad() {
     const { firstSquare, board, road } = this.state
@@ -183,12 +183,13 @@ class Board extends React.Component {
       return row.map((col, j) => {
         return (
           <Square
-            partOfRoad = { road.filter(part => (part === col ? part : null)) }
-            duration = { road.map(part => (part === col ? duration += 3000: null)) }
-            firstSquare = { firstSquare === col ? firstSquare : null }
-            key = { `${i}${j}` }
-            row = { i }
-            col = { j }
+            road={road}
+            partOfRoad={road.filter(part => (part === col ? part : null))}
+            duration={road.map(part => (part === col ? duration += 500 : null))}
+            firstSquare={firstSquare === col ? firstSquare : null}
+            key={`${i}${j}`}
+            row={i}
+            col={j}
           ></Square>
         );
       });
