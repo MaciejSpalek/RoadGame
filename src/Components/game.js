@@ -20,10 +20,16 @@ class Board extends React.Component {
     this.setState({
       board: this.createBoard()
     });
+    this.isStarted()
   }
-  componentDidUpdate() {
-    // this.hideRoad()
-  }
+  // componentDidUpdate() {
+  //   const node = ReactDOM.findDOMNode(this);
+  //   let child;
+  //   if (node instanceof HTMLElement) {
+  //     if (child = node.getElementsByClassName('drawRoad'))
+  //       console.log(child)
+  //   }
+  // }
   createBoard() {
     let list = [];
     for (let row = 0; row < this.state.dimension; row++) {
@@ -189,7 +195,6 @@ class Board extends React.Component {
   }
   renderBoardAndRoad() {
     const { firstSquare, board, road, time, isStarted } = this.state
-
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
@@ -198,6 +203,7 @@ class Board extends React.Component {
             road={road}
             partOfRoad={road.filter(part => (part === col ? part : null))}
             duration={road.map((square, index) => (square === col ? (index + 1) * time : null))}
+            index={road.map((square, index) => (square === col ? index : null))}
             firstSquare={firstSquare === col ? firstSquare : null}
             key={`${i}${j}`}
             row={i}
@@ -207,7 +213,6 @@ class Board extends React.Component {
       });
     });
   }
-
   render() {
     return (
       <div className="game">
