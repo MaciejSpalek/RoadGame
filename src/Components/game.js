@@ -38,14 +38,14 @@ class Board extends React.Component {
     let randomFiled = this.getRandom();
     await this.setState({ firstSquare: randomFiled });
     await this.setRoad(this.state.firstSquare);
-    console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`);
+    // console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`);
   }
-  setRoad = async firstSquare => {
+  setRoad =  firstSquare => {
     const roadArray = [];
     for (let i = 0; i < this.state.amountOfSquares; i++) {
-      await this.setSingleSquare(roadArray,  firstSquare, i);
+       this.setSingleSquare(roadArray,  firstSquare, i);
     }
-    await this.setState({ road: roadArray });
+    this.setState({ road: roadArray });
   }
   isBusySquare(roadArray, row, col) {
     for (let i = 0; i < roadArray.length; i++) {
@@ -176,10 +176,8 @@ class Board extends React.Component {
     await this.drawFirstSquare();
   }
 
-
   renderBoardAndRoad() {
     const { firstSquare, board, road, time } = this.state
-
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
@@ -187,6 +185,7 @@ class Board extends React.Component {
             road={road}
             partOfRoad={road.filter(part => (part === col ? part : null))}
             duration={road.map((square, index) => (square === col ? (index + 1)*time : null))}
+            index={road.map((square, index) => (square === col ? index : null))}
             firstSquare={firstSquare === col ? firstSquare : null}
             key={`${i}${j}`}
             row={i}
