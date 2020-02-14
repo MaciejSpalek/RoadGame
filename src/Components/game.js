@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom"
 import { Square } from "./Square";
 
 class Board extends React.Component {
@@ -11,13 +12,17 @@ class Board extends React.Component {
       dimension: 10,
       time: 500,
       amountOfSquares: 7,
-      firstSquare: null
+      firstSquare: null,
+      isStarted: false
     }
   }
   componentDidMount() {
     this.setState({
       board: this.createBoard()
     });
+  }
+  componentDidUpdate() {
+    // this.hideRoad()
   }
   createBoard() {
     let list = [];
@@ -43,7 +48,7 @@ class Board extends React.Component {
   setRoad = async firstSquare => {
     const roadArray = [];
     for (let i = 0; i < this.state.amountOfSquares; i++) {
-      await this.setSingleSquare(roadArray,  firstSquare, i);
+      await this.setSingleSquare(roadArray, firstSquare, i);
     }
     await this.setState({ road: roadArray });
   }
@@ -57,7 +62,7 @@ class Board extends React.Component {
       }
     }
   }
-  setSingleSquare(roadArray,  firstSquare, i) {
+  setSingleSquare(roadArray, firstSquare, i) {
     const { board } = this.state;
     const direction = this.getDirection();
 
@@ -168,24 +173,30 @@ class Board extends React.Component {
   getDirection() {
     return Math.round(Math.random() * 7);
   }
+  isStarted() {
+    this.setState({
+      isStarted: true
+    })
+  }
   buttonListener = async () => {
     await this.setState({
       road: [],
-      firstSquare: null
+      firstSquare: null,
+      isStarted: false
     })
     await this.drawFirstSquare();
+    await this.isStarted()
   }
-
-
   renderBoardAndRoad() {
-    const { firstSquare, board, road, time } = this.state
+    const { firstSquare, board, road, time, isStarted } = this.state
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
           <Square
+            isStarted={isStarted}
             road={road}
             partOfRoad={road.filter(part => (part === col ? part : null))}
-            duration={road.map((square, index) => (square === col ? (index + 1)*time : null))}
+            duration={road.map((square, index) => (square === col ? (index + 1) * time : null))}
             firstSquare={firstSquare === col ? firstSquare : null}
             key={`${i}${j}`}
             row={i}

@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom"
 import classNames from "classnames";
 
 export class Square extends React.Component {
@@ -6,6 +7,7 @@ export class Square extends React.Component {
     super(props);
     this.state = {
       draw: "",
+      isRunning: false
     }
     this.tick = null
     this.handleSelect = this.handleSelect.bind(this);
@@ -14,21 +16,25 @@ export class Square extends React.Component {
     console.log(this.props.firstSquare);
     console.log(this.props.partOfRoad);
   }
-  componentDidUpdate() {
-    this.updateRoad()
+  componentDidUpdate(prevProps, prevState) {
+  }
+  setDrawRoad() {
+    this.setState({
+      draw: "drawRoad",
+      isRunning: true
+    })
   }
   wait(duration) {
-    this.tick = setTimeout(() => {
-      this.setState({
-        draw: "drawRoad"
-      })
-    }, duration);
-    if (this.tick > 50) {
-      this.clearTick()
+    if (this.props.isStarted) {
+      this.tick = setTimeout(() => {
+        this.setDrawRoad()
+      }, duration);
+    }
+    if (this.tick > 30) {
+      window.clearTimeout(this.tick)
     }
   }
-  clearTick() {
-    window.clearTimeout(this.tick)
+  componentDidMount() {
   }
   updateRoad() {
     const { row, col, partOfRoad, duration } = this.props;
@@ -37,6 +43,7 @@ export class Square extends React.Component {
     }
   }
   renderSquares = () => {
+    this.updateRoad()
     const { firstSquare, row, col, partOfRoad, duration } = this.props;
     const squareClass = classNames({
       'square': true,
