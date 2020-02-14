@@ -88,21 +88,21 @@ class Board extends React.Component {
     }
 
     // up - right
-    if (direction === 1) {
-      if (
-        row - 1 >= 0 &&
-        col + 1 <= 9 &&
-        !this.isBusySquare(roadArray, row - 1, col + 1)
-      ) {
-        firstSquare = board[row - 1][col + 1];
-        roadArray.push(firstSquare);
-      } else {
-        return this.setSingleSquare(roadArray, firstSquare, i)
-      }
-    }
+    // if (direction === 1) {
+    //   if (
+    //     row - 1 >= 0 &&
+    //     col + 1 <= 9 &&
+    //     !this.isBusySquare(roadArray, row - 1, col + 1)
+    //   ) {
+    //     firstSquare = board[row - 1][col + 1];
+    //     roadArray.push(firstSquare);
+    //   } else {
+    //     return this.setSingleSquare(roadArray, firstSquare, i)
+    //   }
+    // }
 
     // right
-    else if (direction === 2) {
+    else if (direction === 1) {
       if (col + 1 <= 9 && !this.isBusySquare(roadArray, row, col + 1)) {
         firstSquare = board[row][col + 1];
         roadArray.push(firstSquare);
@@ -111,20 +111,20 @@ class Board extends React.Component {
       }
     }
     // right - down
-    else if (direction === 3) {
-      if (
-        row + 1 <= 9 &&
-        col + 1 <= 9 &&
-        !this.isBusySquare(roadArray, row + 1, col + 1)
-      ) {
-        firstSquare = board[row + 1][col + 1];
-        roadArray.push(firstSquare);
-      } else {
-        return this.setSingleSquare(roadArray, firstSquare, i)
-      }
-    }
+    // else if (direction === 3) {
+    //   if (
+    //     row + 1 <= 9 &&
+    //     col + 1 <= 9 &&
+    //     !this.isBusySquare(roadArray, row + 1, col + 1)
+    //   ) {
+    //     firstSquare = board[row + 1][col + 1];
+    //     roadArray.push(firstSquare);
+    //   } else {
+    //     return this.setSingleSquare(roadArray, firstSquare, i)
+    //   }
+    // }
     // down
-    else if (direction === 4) {
+    else if (direction === 2) {
       if (row + 1 <= 9 && !this.isBusySquare(roadArray, row + 1, col)) {
         firstSquare = board[row + 1][col];
         roadArray.push(firstSquare);
@@ -133,21 +133,21 @@ class Board extends React.Component {
       }
     }
     // left - down
-    else if (direction === 5) {
-      if (
-        row + 1 <= 9 &&
-        col - 1 >= 0 &&
-        !this.isBusySquare(roadArray, row + 1, col - 1)
-      ) {
-        firstSquare = board[row + 1][col - 1];
-        roadArray.push(firstSquare);
-      } else {
-        return this.setSingleSquare(roadArray, firstSquare, i)
-      }
-    }
+    // else if (direction === 5) {
+    //   if (
+    //     row + 1 <= 9 &&
+    //     col - 1 >= 0 &&
+    //     !this.isBusySquare(roadArray, row + 1, col - 1)
+    //   ) {
+    //     firstSquare = board[row + 1][col - 1];
+    //     roadArray.push(firstSquare);
+    //   } else {
+    //     return this.setSingleSquare(roadArray, firstSquare, i)
+    //   }
+    // }
 
     // left
-    else if (direction === 6) {
+    else if (direction === 3) {
       if (col - 1 >= 0 && !this.isBusySquare(roadArray, row, col - 1)) {
         firstSquare = board[row][col - 1];
         roadArray.push(firstSquare);
@@ -157,21 +157,21 @@ class Board extends React.Component {
     }
 
     // left - up
-    else if (direction === 7) {
-      if (
-        col - 1 >= 0 &&
-        row - 1 >= 0 &&
-        !this.isBusySquare(roadArray, row - 1, col - 1)
-      ) {
-        firstSquare = board[row - 1][col - 1];
-        roadArray.push(firstSquare);
-      } else {
-        return this.setSingleSquare(roadArray, firstSquare, i)
-      }
-    }
+    // else if (direction === 7) {
+    //   if (
+    //     col - 1 >= 0 &&
+    //     row - 1 >= 0 &&
+    //     !this.isBusySquare(roadArray, row - 1, col - 1)
+    //   ) {
+    //     firstSquare = board[row - 1][col - 1];
+    //     roadArray.push(firstSquare);
+    //   } else {
+    //     return this.setSingleSquare(roadArray, firstSquare, i)
+    //   }
+    // }
   }
   getDirection() {
-    return Math.round(Math.random() * 7);
+    return Math.round(Math.random() * 3);
   }
   isStarted() {
     this.setState({
@@ -189,6 +189,7 @@ class Board extends React.Component {
   }
   renderBoardAndRoad() {
     const { firstSquare, board, road, time, isStarted } = this.state
+
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
