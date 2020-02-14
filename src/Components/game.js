@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom"
 import { Square } from "./Square";
 
 class Board extends React.Component {
@@ -10,15 +11,25 @@ class Board extends React.Component {
       road: [],
       dimension: 10,
       time: 500,
-      amountOfSquares: 10,
-      firstSquare: null
+      amountOfSquares: 7,
+      firstSquare: null,
+      isStarted: false
     }
   }
   componentDidMount() {
     this.setState({
       board: this.createBoard()
     });
+    this.isStarted()
   }
+  // componentDidUpdate() {
+  //   const node = ReactDOM.findDOMNode(this);
+  //   let child;
+  //   if (node instanceof HTMLElement) {
+  //     if (child = node.getElementsByClassName('drawRoad'))
+  //       console.log(child)
+  //   }
+  // }
   createBoard() {
     let list = [];
     for (let row = 0; row < this.state.dimension; row++) {
@@ -38,14 +49,14 @@ class Board extends React.Component {
     let randomFiled = this.getRandom();
     await this.setState({ firstSquare: randomFiled });
     await this.setRoad(this.state.firstSquare);
-    console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`);
+    // console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`);
   }
-  setRoad = async firstSquare => {
+  setRoad =  firstSquare => {
     const roadArray = [];
     for (let i = 0; i < this.state.amountOfSquares; i++) {
-      await this.setSingleSquare(roadArray,  firstSquare, i);
+       this.setSingleSquare(roadArray,  firstSquare, i);
     }
-    await this.setState({ road: roadArray });
+    this.setState({ road: roadArray });
   }
   isBusySquare(roadArray, row, col) {
     for (let i = 0; i < roadArray.length; i++) {
@@ -57,7 +68,7 @@ class Board extends React.Component {
       }
     }
   }
-  setSingleSquare(roadArray,  firstSquare, i) {
+  setSingleSquare(roadArray, firstSquare, i) {
     const { board } = this.state;
     const direction = this.getDirection();
 
@@ -168,25 +179,31 @@ class Board extends React.Component {
   getDirection() {
     return Math.round(Math.random() * 3);
   }
+  isStarted() {
+    this.setState({
+      isStarted: true
+    })
+  }
   buttonListener = async () => {
     await this.setState({
       road: [],
-      firstSquare: null
+      firstSquare: null,
+      isStarted: false
     })
     await this.drawFirstSquare();
+    await this.isStarted()
   }
-
-
   renderBoardAndRoad() {
-    const { firstSquare, board, road, time } = this.state
-
+    const { firstSquare, board, road, time, isStarted } = this.state
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
           <Square
+            isStarted={isStarted}
             road={road}
             partOfRoad={road.filter(part => (part === col ? part : null))}
             duration={road.map((square, index) => (square === col ? (index + 1)*time : null))}
+            index={road.map((square, index) => (square === col ? index : null))}
             firstSquare={firstSquare === col ? firstSquare : null}
             key={`${i}${j}`}
             row={i}
@@ -196,7 +213,6 @@ class Board extends React.Component {
       });
     });
   }
-
   render() {
     return (
       <div className="game">
