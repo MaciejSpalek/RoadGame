@@ -11,34 +11,17 @@ export class Square extends React.Component {
       isVisible: false,
       road: props.road,
       isRunning: props.isStarted,
+      isDisabled: true,
     }
-    this.checkRoad= this.checkRoad.bind(this);
     this.timeForDrawId = null;
     this.timeForHideId = null;
   }
 
-  checkRoad(event) {
-    event.preventDefault();
-    const { partOfRoad, row, col, index } = this.props;
-    let { lastClickedIndex } = this.state;
-    const currentIndex = index.filter(el => typeof el == "number" ? el+1 : null)[0];
-
-    console.log("Początek funkcji"+ lastClickedIndex)
-    if(currentIndex == lastClickedIndex) {
-        this.setState({
-          lastClickedIndex: lastClickedIndex+5
-        })
-      } 
-      console.log("Koniec funkcji"+ lastClickedIndex)
-  }
-  componentDidUpdate() {
-    this.updateRoad()
-  }
-  
- 
   async componentDidUpdate() {
+    const { row, col, partOfRoad } = this.props;
+
     if (this.state.isRunning) {
-      this.hideRoad()
+      await this.hideRoad()
     }
   }
 
@@ -55,7 +38,8 @@ export class Square extends React.Component {
   }
   async wait(duration) {
     await this.setDrawRoad({
-       draw: "drawRoad", isVisible: true }, duration)
+      draw: "drawRoad", isVisible: true
+    }, duration)
     if (this.timeForDrawId > 30) {
       window.clearTimeout(this.timeForDrawId)
       this.timeForDrawId = null
@@ -84,14 +68,15 @@ export class Square extends React.Component {
   }
   renderSquares = () => {
     this.updateRoad()
-    const { draw, isVisible } = this.state;
-    const { firstSquare, row, col, partOfRoad, duration, index } = this.props;
+    const { draw, isVisible, isDisabled, } = this.state;
+    const { firstSquare, row, col, partOfRoad, duration, index, handleClick, disabled, isHitSquare } = this.props;
     const squareClass = classNames({
       'square': true,
       'startSquare': firstSquare === `${row}${col}`,
-      'drawRoad': isVisible ? partOfRoad[0] === `${row}${col}` ? draw : null : false
+      'drawRoad': isVisible ? partOfRoad[0] === `${row}${col}` ? draw : null : false,
+      'hitSquare': partOfRoad[0] === `${row}${col}` ? isHitSquare : false
     })
-
+    // console.log(row, col)
     return (
       <div
         index={index}
@@ -99,9 +84,10 @@ export class Square extends React.Component {
         col={col}
         row={row}
         duration={duration}
-        onClick={this.checkRoad}
+        disabled={disabled}
+        onClick={() => handleClick(row, col, index)}
       >
-        {}
+        {index}
       </div >
     );
   }
