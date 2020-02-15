@@ -10,12 +10,16 @@ class Board extends React.Component {
       road: [],
       dimension: 10,
       time: 500,
-      amountOfSquares: 3,
+      amountOfSquares: 7,
       firstSquare: null,
       isStarted: false,
       lastClickedIndex: 0,
       miss: 0,
-      isHitSquare: false
+      currentCol: 0,
+      currentRow: 0,
+      clickedRoad: [],
+      missArray: []
+
     }
     this.buttonListener = this.buttonListener.bind(this);
     this.checkRoad = this.checkRoad.bind(this)
@@ -34,7 +38,7 @@ class Board extends React.Component {
     //     console.log(child)
     // }
     // console.log(this.state.lastClickedIndex)
-
+    
   }
   createBoard() {
     let list = [];
@@ -200,20 +204,19 @@ class Board extends React.Component {
     await this.isStarted()
   }
   checkRoad = async (row, col, index) => {
-    const { lastClickedIndex, miss } = this.state;
+    const { lastClickedIndex, miss, clickedRoad, missArray, board } = this.state;
     const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
-    // console.log(index.length);
-
 
     if (currentIndex === lastClickedIndex) {
       await this.setState((prevState) => ({
         lastClickedIndex: prevState.lastClickedIndex + 1,
-        isHitSquare: true
+        clickedRoad: [...clickedRoad, board[row][col]]
       }))
-      console.log("LastCliked =", this.state.lastClickedIndex)
-    } else {
+    } 
+    else {
       await this.setState((prevState) => ({
-        miss: prevState.miss + 1
+        miss: prevState.miss + 1,
+        missArray: [...missArray, board[row][col]]
       }))
       console.log("Miss is numer", this.state.miss)
     }
@@ -225,7 +228,7 @@ class Board extends React.Component {
     }
   }
   renderBoardAndRoad() {
-    const { firstSquare, board, road, time, isStarted, isHitSquare } = this.state
+    const { firstSquare, board, road, time, isStarted, clickedRoad, missArray} = this.state
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
@@ -239,9 +242,9 @@ class Board extends React.Component {
             row={i}
             col={j}
             index={road.map((square, index) => (square === col ? index : null))}
-            isHitSquare={road.map((square, index) => (square === col ? isHitSquare : null))}
+            clickedRoad = {clickedRoad}
+            missArray = {missArray}
             handleClick={this.checkRoad}
-            disabled={!true}
           ></Square>
         );
       });
