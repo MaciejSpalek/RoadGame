@@ -5,16 +5,20 @@ import { Square } from "./Square";
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.buttonListener = this.buttonListener.bind(this);
     this.state = {
       board: [],
       road: [],
       dimension: 10,
       time: 500,
-      amountOfSquares: 7,
+      amountOfSquares: 3,
       firstSquare: null,
-      isStarted: false
+      isStarted: false,
+      lastClickedIndex: 0,
+      miss: 0,
+      isHitSquare: false
     }
+    this.buttonListener = this.buttonListener.bind(this);
+    this.checkRoad = this.checkRoad.bind(this)
   }
   componentDidMount() {
     this.setState({
@@ -22,14 +26,16 @@ class Board extends React.Component {
     });
     this.isStarted()
   }
-  // componentDidUpdate() {
-  //   const node = ReactDOM.findDOMNode(this);
-  //   let child;
-  //   if (node instanceof HTMLElement) {
-  //     if (child = node.getElementsByClassName('drawRoad'))
-  //       console.log(child)
-  //   }
-  // }
+  componentDidUpdate() {
+    // const node = ReactDOM.findDOMNode(this);
+    // let child;
+    // if (node instanceof HTMLElement) {
+    //   if (child = node.getElementsByClassName('drawRoad'))
+    //     console.log(child)
+    // }
+    // console.log(this.state.lastClickedIndex)
+
+  }
   createBoard() {
     let list = [];
     for (let row = 0; row < this.state.dimension; row++) {
@@ -49,14 +55,14 @@ class Board extends React.Component {
     let randomFiled = this.getRandom();
     await this.setState({ firstSquare: randomFiled });
     await this.setRoad(this.state.firstSquare);
-    console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`);
+    // console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`);
   }
-  setRoad = async firstSquare => {
+  setRoad = firstSquare => {
     const roadArray = [];
     for (let i = 0; i < this.state.amountOfSquares; i++) {
-      await this.setSingleSquare(roadArray, firstSquare, i);
+      this.setSingleSquare(roadArray, firstSquare, i);
     }
-    await this.setState({ road: roadArray });
+    this.setState({ road: roadArray });
   }
   isBusySquare(roadArray, row, col) {
     for (let i = 0; i < roadArray.length; i++) {
@@ -193,8 +199,33 @@ class Board extends React.Component {
     await this.drawFirstSquare();
     await this.isStarted()
   }
+  checkRoad = async (row, col, index) => {
+    const { lastClickedIndex, miss } = this.state;
+    const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
+    // console.log(index.length);
+
+
+    if (currentIndex === lastClickedIndex) {
+      await this.setState((prevState) => ({
+        lastClickedIndex: prevState.lastClickedIndex + 1,
+        isHitSquare: true
+      }))
+      console.log("LastCliked =", this.state.lastClickedIndex)
+    } else {
+      await this.setState((prevState) => ({
+        miss: prevState.miss + 1
+      }))
+      console.log("Miss is numer", this.state.miss)
+    }
+    if (lastClickedIndex === index.length - 1) {
+      console.log("You got it everything")
+    }
+    if (miss >= 2) {
+      console.log("You failed")
+    }
+  }
   renderBoardAndRoad() {
-    const { firstSquare, board, road, time, isStarted } = this.state
+    const { firstSquare, board, road, time, isStarted, isHitSquare } = this.state
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
@@ -203,11 +234,14 @@ class Board extends React.Component {
             road={road}
             partOfRoad={road.filter(part => (part === col ? part : null))}
             duration={road.map((square, index) => (square === col ? (index + 1) * time : null))}
-            index={road.map((square, index) => (square === col ? index : null))}
             firstSquare={firstSquare === col ? firstSquare : null}
             key={`${i}${j}`}
             row={i}
             col={j}
+            index={road.map((square, index) => (square === col ? index : null))}
+            isHitSquare={road.map((square, index) => (square === col ? isHitSquare : null))}
+            handleClick={this.checkRoad}
+            disabled={!true}
           ></Square>
         );
       });
@@ -217,7 +251,7 @@ class Board extends React.Component {
     return (
       <div className="game">
         <div className="board">{this.renderBoardAndRoad()}</div>
-        <button className="game__start-button" onClick={this.buttonListener}>
+        <button disabled={false} className="game__start-button" onClick={this.buttonListener}>
           START
         </button>
       </div>
