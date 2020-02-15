@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-
 export class Square extends React.Component {
   constructor(props) {
     super(props);
@@ -16,15 +15,11 @@ export class Square extends React.Component {
     this.timeForDrawId = null;
     this.timeForHideId = null;
   }
-
   async componentDidUpdate() {
-    const { row, col, partOfRoad } = this.props;
-
     if (this.state.isRunning) {
       await this.hideRoad()
     }
   }
-
   setDrawRoad(newState, duration) {
     if (this.state.isRunning) {
       return new Promise((resolve) => {
@@ -68,15 +63,16 @@ export class Square extends React.Component {
   }
   renderSquares = () => {
     this.updateRoad()
-    const { draw, isVisible, isDisabled, } = this.state;
-    const { firstSquare, row, col, partOfRoad, duration, index, handleClick, disabled, isHitSquare } = this.props;
+    const { draw, isVisible } = this.state;
+    const { firstSquare, row, col, partOfRoad, duration, index, handleClick, clickedRoad, missArray, isLocked } = this.props;
     const squareClass = classNames({
       'square': true,
+      'squareHover': isLocked ? false : true,
       'startSquare': firstSquare === `${row}${col}`,
       'drawRoad': isVisible ? partOfRoad[0] === `${row}${col}` ? draw : null : false,
-      'hitSquare': partOfRoad[0] === `${row}${col}` ? isHitSquare : false
+      'hitSquare': true ? clickedRoad.filter(el => el === `${row}${col}`)[0] : false,
+      'missSquare': true ? missArray.filter(el => el === `${row}${col}`)[0] : false,
     })
-    // console.log(row, col)
     return (
       <div
         index={index}
@@ -84,10 +80,10 @@ export class Square extends React.Component {
         col={col}
         row={row}
         duration={duration}
-        disabled={disabled}
+        clickedroad={clickedRoad}
+        missarray={missArray}
         onClick={() => handleClick(row, col, index)}
       >
-        {index}
       </div >
     );
   }

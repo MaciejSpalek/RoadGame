@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom"
+// import ReactDOM from "react-dom"
 import { Square } from "./Square";
 
 class Board extends React.Component {
@@ -10,12 +10,17 @@ class Board extends React.Component {
       road: [],
       dimension: 10,
       time: 500,
-      amountOfSquares: 3,
+      amountOfSquares: 7,
       firstSquare: null,
       isStarted: false,
       lastClickedIndex: 0,
       miss: 0,
-      isHitSquare: false
+      currentCol: 0,
+      currentRow: 0,
+      clickedRoad: [],
+      missArray: [],
+      isLocked: true
+
     }
     this.buttonListener = this.buttonListener.bind(this);
     this.checkRoad = this.checkRoad.bind(this)
@@ -190,30 +195,39 @@ class Board extends React.Component {
       isStarted: true
     })
   }
+  unlockSquares() {
+    const { amountOfSquares } = this.state;
+    setTimeout(() => {
+      this.setState({
+        isLocked: false
+      })
+    }, amountOfSquares * 1000)
+  }
   buttonListener = async () => {
     await this.setState({
       road: [],
       firstSquare: null,
-      isStarted: false
+      isStarted: false,
     })
     await this.drawFirstSquare();
-    await this.isStarted()
+    await this.isStarted();
+    await this.unlockSquares();
   }
   checkRoad = async (row, col, index) => {
-    const { lastClickedIndex, miss } = this.state;
-    const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
-    // console.log(index.length);
+    const { lastClickedIndex, miss, clickedRoad, missArray, board, road, isLocked } = this.state;
+    // const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
+    if (isLocked) return;
 
-
-    if (currentIndex === lastClickedIndex) {
+    if (road.includes(board[row][col])) {
       await this.setState((prevState) => ({
         lastClickedIndex: prevState.lastClickedIndex + 1,
-        isHitSquare: true
+        clickedRoad: [...clickedRoad, board[row][col]]
       }))
-      console.log("LastCliked =", this.state.lastClickedIndex)
-    } else {
+    }
+    else {
       await this.setState((prevState) => ({
-        miss: prevState.miss + 1
+        miss: prevState.miss + 1,
+        missArray: [...missArray, board[row][col]]
       }))
       console.log("Miss is numer", this.state.miss)
     }
@@ -225,12 +239,13 @@ class Board extends React.Component {
     }
   }
   renderBoardAndRoad() {
-    const { firstSquare, board, road, time, isStarted, isHitSquare } = this.state
+    const { firstSquare, board, road, time, isStarted, clickedRoad, missArray, isLocked } = this.state
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
           <Square
             isStarted={isStarted}
+            isLocked={isLocked}
             road={road}
             partOfRoad={road.filter(part => (part === col ? part : null))}
             duration={road.map((square, index) => (square === col ? (index + 1) * time : null))}
@@ -239,19 +254,20 @@ class Board extends React.Component {
             row={i}
             col={j}
             index={road.map((square, index) => (square === col ? index : null))}
-            isHitSquare={road.map((square, index) => (square === col ? isHitSquare : null))}
+            clickedRoad={clickedRoad}
+            missArray={missArray}
             handleClick={this.checkRoad}
-            disabled={!true}
           ></Square>
         );
       });
     });
   }
   render() {
+    const { isLocked } = this.state;
     return (
       <div className="game">
         <div className="board">{this.renderBoardAndRoad()}</div>
-        <button disabled={false} className="game__start-button" onClick={this.buttonListener}>
+        <button disabled={!isLocked} className="game__start-button" onClick={this.buttonListener}>
           START
         </button>
       </div>
