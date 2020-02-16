@@ -20,7 +20,7 @@ export class Square extends React.Component {
       await this.hideRoad()
     }
   }
-  
+
   setDrawRoad(newState, duration) {
     if (this.state.isRunning) {
       return new Promise((resolve) => {
@@ -52,7 +52,7 @@ export class Square extends React.Component {
 
   setTime(myTime) {
     const { amountOfSquares, time } = this.props;
-    return (amountOfSquares*time) + myTime;
+    return (amountOfSquares * time) + myTime;
   }
 
   hideRoad() {
@@ -63,7 +63,7 @@ export class Square extends React.Component {
           isVisible: false,
           isRunning: false
         })
-      },  this.setTime(5000))
+      }, this.setTime(5000))
       if (!this.state.isRunning) {
         window.clearTimeout(this.timeForHideId)
         this.timeForHideId = null;
@@ -91,7 +91,7 @@ export class Square extends React.Component {
         duration={duration}
         clickedroad={clickedRoad}
         missarray={missArray}
-        onClick={() => handleClick(row, col, index)}
+        onClick={(e) => handleClick(row, col, index, e)}
       >
       </div >
     );

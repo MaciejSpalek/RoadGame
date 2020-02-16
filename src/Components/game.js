@@ -39,6 +39,8 @@ class Board extends React.Component {
     //     console.log(child)
     // }
     // console.log(this.state.lastClickedIndex)
+    // console.log(this.state.clickedRoad)
+
   }
   createBoard() {
     let list = [];
@@ -188,7 +190,7 @@ class Board extends React.Component {
   }
   setTime(myTime) {
     const { amountOfSquares, time } = this.state;
-    return (amountOfSquares*time) + myTime;
+    return (amountOfSquares * time) + myTime;
   }
   getDirection() {
     return Math.round(Math.random() * 3);
@@ -216,32 +218,33 @@ class Board extends React.Component {
     await this.unlockSquares();
   }
 
-  checkRoad = (row, col, index) => {
+  checkRoad = (row, col, index, e) => {
+    e.preventDefault()
     const { lastClickedIndex, miss, clickedRoad, missArray, board, road, isLocked, firstSquare } = this.state;
     // const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
     if (isLocked || clickedRoad.includes(board[row][col]) || board[row][col] === firstSquare) return;
-  
-    console.log(clickedRoad)
-    console.log(lastClickedIndex, road.length-1)
-    if (lastClickedIndex === road.length-1) {
-      console.log("You got it everything")
-    }
 
     if (road.includes(board[row][col])) {
-       this.setState(prevState=>({
+      this.setState(prevState => ({
         lastClickedIndex: prevState.lastClickedIndex + 1,
-        clickedRoad: [...clickedRoad, board[row][col]]
-      }))
+        clickedRoad: [...prevState.clickedRoad, board[row][col]]
+      }), () => {
+        console.log(this.state.lastClickedIndex, road.length)
+        console.log(this.state.clickedRoad)
+        if (this.state.lastClickedIndex === road.length) {
+          console.log("You got it everything")
+        }
+      })
     } else {
-       this.setState(prevState => ({
+      this.setState(prevState => ({
         miss: prevState.miss + 1,
         missArray: [...missArray, board[row][col]]
-      }))
-      console.log("Miss is numer", this.state.miss)
-    }
-
-    if (miss > 2) {
-      console.log("You failed")
+      }), () => {
+        console.log("Miss is numer", this.state.miss)
+        if (this.state.miss > 2) {
+          console.log("You failed")
+        }
+      })
     }
   }
 
@@ -279,6 +282,7 @@ class Board extends React.Component {
         <button disabled={!isLocked} className="game__start-button" onClick={this.buttonListener}>
           START
         </button>
+        {this.state.lastClickedIndex}
       </div>
     );
   }
