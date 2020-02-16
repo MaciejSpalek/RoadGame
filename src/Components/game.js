@@ -39,6 +39,7 @@ class Board extends React.Component {
     //     console.log(child)
     // }
     // console.log(this.state.lastClickedIndex)
+    // console.log(this.state.clickedRoad)
 
   }
   createBoard() {
@@ -187,6 +188,10 @@ class Board extends React.Component {
     //   }
     // }
   }
+  setTime(myTime) {
+    const { amountOfSquares, time } = this.state;
+    return (amountOfSquares * time) + myTime;
+  }
   getDirection() {
     return Math.round(Math.random() * 3);
   }
@@ -196,12 +201,11 @@ class Board extends React.Component {
     })
   }
   unlockSquares() {
-    const { amountOfSquares } = this.state;
     setTimeout(() => {
       this.setState({
         isLocked: false
       })
-    }, amountOfSquares * 1000)
+    }, this.setTime(5000))
   }
   buttonListener = async () => {
     await this.setState({
@@ -213,33 +217,39 @@ class Board extends React.Component {
     await this.isStarted();
     await this.unlockSquares();
   }
-  checkRoad = async (row, col, index) => {
-    const { lastClickedIndex, miss, clickedRoad, missArray, board, road, isLocked } = this.state;
+
+  checkRoad = (row, col, index, e) => {
+    e.preventDefault()
+    const { lastClickedIndex, miss, clickedRoad, missArray, board, road, isLocked, firstSquare } = this.state;
     // const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
-    if (isLocked) return;
+    if (isLocked || clickedRoad.includes(board[row][col]) || board[row][col] === firstSquare) return;
 
     if (road.includes(board[row][col])) {
-      await this.setState((prevState) => ({
+      this.setState(prevState => ({
         lastClickedIndex: prevState.lastClickedIndex + 1,
-        clickedRoad: [...clickedRoad, board[row][col]]
-      }))
-    }
-    else {
-      await this.setState((prevState) => ({
+        clickedRoad: [...prevState.clickedRoad, board[row][col]]
+      }), () => {
+        console.log(this.state.lastClickedIndex, road.length)
+        console.log(this.state.clickedRoad)
+        if (this.state.lastClickedIndex === road.length) {
+          console.log("You got it everything")
+        }
+      })
+    } else {
+      this.setState(prevState => ({
         miss: prevState.miss + 1,
         missArray: [...missArray, board[row][col]]
-      }))
-      console.log("Miss is numer", this.state.miss)
-    }
-    if (lastClickedIndex === index.length - 1) {
-      console.log("You got it everything")
-    }
-    if (miss >= 2) {
-      console.log("You failed")
+      }), () => {
+        console.log("Miss is numer", this.state.miss)
+        if (this.state.miss > 2) {
+          console.log("You failed")
+        }
+      })
     }
   }
+
   renderBoardAndRoad() {
-    const { firstSquare, board, road, time, isStarted, clickedRoad, missArray, isLocked } = this.state
+    const { firstSquare, board, road, time, isStarted, clickedRoad, missArray, isLocked, amountOfSquares } = this.state
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
@@ -256,6 +266,8 @@ class Board extends React.Component {
             index={road.map((square, index) => (square === col ? index : null))}
             clickedRoad={clickedRoad}
             missArray={missArray}
+            time={time}
+            amountOfSquares={amountOfSquares}
             handleClick={this.checkRoad}
           ></Square>
         );
@@ -270,6 +282,7 @@ class Board extends React.Component {
         <button disabled={!isLocked} className="game__start-button" onClick={this.buttonListener}>
           START
         </button>
+        {this.state.lastClickedIndex}
       </div>
     );
   }

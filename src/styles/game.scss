@@ -37,7 +37,7 @@
 	height: 500px;
 	border: 8px solid rgb(71, 0, 143);
 	border-radius: 10px;
-	background: linear-gradient(60deg, rgb(155, 55, 255), rgb(58, 1, 116), rgb(19, 0, 37));
+	background-color: rgb(58, 1, 116);
 }
 
 .square {
@@ -51,10 +51,10 @@
 	font-size: 1.5em;
 	font-weight: bold;
 	cursor: pointer;
-}
-.squareHover:hover {
-	background-color: rgba(0, 0, 0, 0.24);
-	box-shadow: inset 0 0 1.5px 1.5px rgb(20, 0, 15);
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.24);
+		box-shadow: inset 0 0 1.5px 1.5px rgb(20, 0, 15);
+	}
 }
 
 .startSquare {
@@ -66,6 +66,7 @@
 	}
 }
 .drawRoad {
+	animation: increaseVisibility .5s cubic-bezier(0.47, 0, 0.745, 0.715) both;
 	background-color: rgb(185, 236, 0);
 	box-shadow: inset 0 0 1.5px 1.5px rgb(112, 110, 0);
 	&:hover {
@@ -89,7 +90,6 @@
 		background-color: rgba(175, 0, 0, 0.384);
 		box-shadow: inset 0 0 1.5px 1.5px rgb(29, 0, 0);
 	}
-
 	&::before {
 		content: "\2716";
 		display: flex;
@@ -101,16 +101,21 @@
 		color: red;
 		font-size: 2em;
 		padding-bottom: 5%;
-		transition: .1s;
+		transition: .1s ;
 	}
 
 	&:hover::before {
 		color: rgb(129, 0, 0);
 	}
-	// background-color: rgb(255, 0, 0);
-	// box-shadow: inset 0 0 1.5px 1.5px rgb(82, 0, 0);
-	// &:hover {
-	// 	background-color: rgb(151, 0, 0);
-	// 	box-shadow: inset 0 0 1.5px 1.5px rgb(29, 0, 0);
-	// }
+}
+
+@keyframes increaseVisibility {
+	from {
+		opacity: 0;
+		transform: scale(0);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
