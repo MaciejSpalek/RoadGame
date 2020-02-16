@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import setDuration from "./lib/setDuration";
 export class Square extends React.Component {
   constructor(props) {
     super(props);
@@ -50,12 +51,8 @@ export class Square extends React.Component {
     }
   }
 
-  setTime(myTime) {
-    const { amountOfSquares, time } = this.props;
-    return (amountOfSquares * time) + myTime;
-  }
-
   hideRoad() {
+    const { amountOfSquares, time } = this.props;
     return new Promise((resolve, reject) => {
       this.timeForHideId = setTimeout(() => {
         this.setState({
@@ -63,7 +60,7 @@ export class Square extends React.Component {
           isVisible: false,
           isRunning: false
         })
-      }, this.setTime(5000))
+      }, setDuration({ amountOfSquares, time }, 5000))
       if (!this.state.isRunning) {
         window.clearTimeout(this.timeForHideId)
         this.timeForHideId = null;
@@ -73,10 +70,9 @@ export class Square extends React.Component {
   renderSquares = () => {
     this.updateRoad()
     const { draw, isVisible } = this.state;
-    const { firstSquare, row, col, partOfRoad, duration, index, handleClick, clickedRoad, missArray, isLocked } = this.props;
+    const { firstSquare, row, col, partOfRoad, duration, index, handleClick, clickedRoad, missArray } = this.props;
     const squareClass = classNames({
       'square': true,
-      'squareHover': isLocked ? false : true,
       'startSquare': firstSquare === `${row}${col}`,
       'drawRoad': isVisible ? partOfRoad[0] === `${row}${col}` ? draw : null : false,
       'hitSquare': true ? clickedRoad.filter(el => el === `${row}${col}`)[0] : false,

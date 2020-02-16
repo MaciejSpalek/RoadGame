@@ -1,6 +1,7 @@
 import React from "react";
 // import ReactDOM from "react-dom"
 import { Square } from "./Square";
+import setDuration from "./lib/setDuration"
 
 class Board extends React.Component {
   constructor(props) {
@@ -188,10 +189,7 @@ class Board extends React.Component {
     //   }
     // }
   }
-  setTime(myTime) {
-    const { amountOfSquares, time } = this.state;
-    return (amountOfSquares * time) + myTime;
-  }
+
   getDirection() {
     return Math.round(Math.random() * 3);
   }
@@ -201,11 +199,12 @@ class Board extends React.Component {
     })
   }
   unlockSquares() {
+    const { amountOfSquares, time } = this.state;
     setTimeout(() => {
       this.setState({
         isLocked: false
       })
-    }, this.setTime(5000))
+    }, setDuration({ amountOfSquares, time }, 5000))
   }
   buttonListener = async () => {
     await this.setState({
@@ -229,8 +228,6 @@ class Board extends React.Component {
         lastClickedIndex: prevState.lastClickedIndex + 1,
         clickedRoad: [...prevState.clickedRoad, board[row][col]]
       }), () => {
-        console.log(this.state.lastClickedIndex, road.length)
-        console.log(this.state.clickedRoad)
         if (this.state.lastClickedIndex === road.length) {
           console.log("You got it everything")
         }
@@ -240,13 +237,17 @@ class Board extends React.Component {
         miss: prevState.miss + 1,
         missArray: [...missArray, board[row][col]]
       }), () => {
-        console.log("Miss is numer", this.state.miss)
         if (this.state.miss > 2) {
           console.log("You failed")
         }
       })
     }
   }
+  // counter(){
+  //   setTimeout(()=>{
+
+  //   })
+  // }
 
   renderBoardAndRoad() {
     const { firstSquare, board, road, time, isStarted, clickedRoad, missArray, isLocked, amountOfSquares } = this.state
@@ -282,7 +283,6 @@ class Board extends React.Component {
         <button disabled={!isLocked} className="game__start-button" onClick={this.buttonListener}>
           START
         </button>
-        {this.state.lastClickedIndex}
       </div>
     );
   }
