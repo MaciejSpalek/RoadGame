@@ -1,6 +1,7 @@
 import React from "react";
 // import ReactDOM from "react-dom"
 import { Square } from "./Square";
+import Counter from './Counter/Counter'
 import setDuration from "./lib/setDuration"
 
 class Board extends React.Component {
@@ -20,8 +21,8 @@ class Board extends React.Component {
       currentRow: 0,
       clickedRoad: [],
       missArray: [],
-      isLocked: true
-
+      isLocked: true,
+      counterIsVisible: false
     }
     this.buttonListener = this.buttonListener.bind(this);
     this.checkRoad = this.checkRoad.bind(this)
@@ -215,6 +216,7 @@ class Board extends React.Component {
     await this.drawFirstSquare();
     await this.isStarted();
     await this.unlockSquares();
+    await this.setCounter();
   }
 
   checkRoad = (row, col, index, e) => {
@@ -243,11 +245,15 @@ class Board extends React.Component {
       })
     }
   }
-  // counter(){
-  //   setTimeout(()=>{
-
-  //   })
-  // }
+  async setCounter() {
+    const { amountOfSquares, time } = this.state
+    setTimeout(() => {
+      console.log('counter is started')
+      this.setState({
+        counterIsVisible: true
+      })
+    }, await setDuration({ amountOfSquares, time }, time))
+  }
 
   renderBoardAndRoad() {
     const { firstSquare, board, road, time, isStarted, clickedRoad, missArray, isLocked, amountOfSquares } = this.state
@@ -276,13 +282,14 @@ class Board extends React.Component {
     });
   }
   render() {
-    const { isLocked } = this.state;
+    const { isLocked, counterIsVisible } = this.state;
     return (
       <div className="game">
         <div className="board">{this.renderBoardAndRoad()}</div>
         <button disabled={!isLocked} className="game__start-button" onClick={this.buttonListener}>
           START
         </button>
+        {counterIsVisible ? <Counter /> : null}
       </div>
     );
   }

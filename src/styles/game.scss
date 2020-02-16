@@ -101,12 +101,15 @@
 		color: red;
 		font-size: 2em;
 		padding-bottom: 5%;
-		transition: .1s ;
+		transition: .1s;
 	}
 
 	&:hover::before {
 		color: rgb(129, 0, 0);
 	}
+}
+.counter {
+	color: white;
 }
 
 @keyframes increaseVisibility {
