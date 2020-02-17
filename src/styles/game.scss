@@ -4,6 +4,7 @@
 	height: 100vh;
 	justify-content: center;
 	background-color: #171717;
+	position: relative;
 
 	&__start-button {
 		margin: 1rem;
@@ -109,7 +110,12 @@
 	}
 }
 .counter {
-	color: white;
+	position: absolute;
+	top: 10%;
+	left: 20%;
+	font-size: 2rem;
+	font-weight: 600;
+	color: rgb(255, 251, 30);
 }
 
 @keyframes increaseVisibility {

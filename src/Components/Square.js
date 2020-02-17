@@ -10,7 +10,7 @@ export class Square extends React.Component {
       lastClickedIndex: 0,
       isVisible: false,
       road: props.road,
-      isRunning: props.isStarted,
+      isRunning: props.isGameStarted,
       isDisabled: true,
     }
     this.timeForDrawId = null;
@@ -20,6 +20,7 @@ export class Square extends React.Component {
     if (this.state.isRunning) {
       await this.hideRoad()
     }
+
   }
 
   setDrawRoad(newState, duration) {
@@ -45,11 +46,24 @@ export class Square extends React.Component {
   }
 
   updateRoad() {
+    if (this.props.isWin) {
+      this.setState({
+        isRunning: false,
+        isVisible: false
+      })
+    }
     const { row, col, partOfRoad, duration } = this.props;
     if (partOfRoad[0] === `${row}${col}`) {
       this.wait(duration.filter(el => typeof el == "number" ? el : null)[0]);
     }
   }
+  // durationForHideRoad() {
+  //   const { amountOfSquares, time } = this.props
+  //   // let id = null;
+  //   id = setTimeout(() => {
+  //     this.hideRoad()
+  //   }, setDuration({ amountOfSquares, time }, 5000))
+  // }
 
   hideRoad() {
     const { amountOfSquares, time } = this.props;
@@ -68,6 +82,8 @@ export class Square extends React.Component {
     })
   }
   renderSquares = () => {
+
+    // this.durationForHideRoad()
     this.updateRoad()
     const { draw, isVisible } = this.state;
     const { firstSquare, row, col, partOfRoad, duration, index, handleClick, clickedRoad, missArray } = this.props;
