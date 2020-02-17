@@ -1,26 +1,32 @@
 import React from "react";
-// import ReactDOM from "react-dom"
 import { Square } from "./Square";
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // arrays
       board: [],
       road: [],
-      dimension: 10,
-      time: 500,
-      amountOfSquares: 7,
-      firstSquare: null,
-      isStarted: false,
-      lastClickedIndex: 0,
-      miss: 0,
-      currentCol: 0,
-      currentRow: 0,
       clickedRoad: [],
       missArray: [],
-      isLocked: true
 
+      // variables
+      dimension: 10,
+      time: 1000,
+      amountOfSquares: 3,
+      firstSquare: null,
+      lastClickedIndex: 0,
+      miss: 0,
+
+      // flags
+      isButtonDisabled: false,
+      isStarted: false,
+      isWin: false,
+      isLocked: true,
+      isButtonClicked: false,
+      isVisible: false,
+      draw: ""
     }
     this.buttonListener = this.buttonListener.bind(this);
     this.checkRoad = this.checkRoad.bind(this)
@@ -209,30 +215,123 @@ class Board extends React.Component {
   }
   buttonListener = async () => {
     await this.setState({
-      road: [],
-      firstSquare: null,
-      isStarted: false,
+      isButtonDisabled: true,
+      isButtonClicked: true,
+      isWin: false
     })
     await this.drawFirstSquare();
     await this.isStarted();
     await this.unlockSquares();
+    await this.updateRoad();
   }
 
-  checkRoad = (row, col, index, e) => {
+
+  async wait(duration) {
+    await this.setDrawRoad({
+      draw: "drawRoad", 
+      isVisible: true
+    }, duration)
+    
+    if (this.timeForDrawId > 30) {
+      window.clearTimeout(this.timeForDrawId)
+      this.timeForDrawId = null
+    }
+  }
+
+   setDrawRoad(newState, duration) {
+    if (this.state.isRunning) {
+      return new Promise((resolve, reject) => {
+        this.timeForDrawId = setTimeout(() => {
+          this.setState(newState, () => {
+            resolve()
+          })
+        }, duration)
+      })
+    }
+  }
+
+  // setSquareDuration(road, col) {
+  //   const durationArray = road.map((square, index) => (square === col ? (index + 1) * 500 : null));
+  //   const durationElement = durationArray.filter(square => typeof square === "number")[0];
+  //   if(typeof durationElement === "number") {
+  //     return durationElement;
+  //   } else {
+  //     return null;
+  //   } 
+  // }
+
+  setSquareDuration(road, col) {
+    const durationArray = road.map((square, index) => (square === col ? (index + 1) * 500 : null));
+    const durationElement = durationArray.filter(square => typeof square === "number")[0];
+    return durationElement;
+  }
+
+
+  updateRoad() {
+    const { partOfRoad, duration, road, board } = this.state;
+    board.map((row) => {
+      row.map((col) => {
+        if(col == road.filter(roadSquare => roadSquare == col ? col: null)[0]) {
+          const duration = this.setSquareDuration(road, col);
+          console.log(duration)
+          this.wait(duration);
+        }
+        // console.log(road.filter(roadSquare => roadSquare == col ? col: null)[0])
+        
+        // console.log(col)
+          
+          // console.log(col, roadSquare)
+        
+      })
+    })
+    // road.filter(part => (part === col ? part : null))
+    // if (road.filter(part => (part === col ? part : null))[0] === `${row}${col}`) {
+    //   this.wait(duration.filter(el => typeof el == "number" ? el : null)[0]);
+    // }
+
+    // if()
+  }
+
+  ifWin() {
+    setTimeout(() => {
+    this.setState({
+      isButtonDisabled: false, // turn on button
+      isButtonClicked: false,
+      isStarted: false, 
+      isLocked: true, // disable click on squares
+      isWin: true, 
+
+      clickedRoad: [],
+      missArray: [],
+      road: [],
+     
+      lastClickedIndex: 0,
+      firstSquare: null,
+      miss: 0,
+      
+      
+    })
+   }, 1000);
+   
+  }
+
+  checkRoad = (row, col, e) => {
     e.preventDefault()
-    const { lastClickedIndex, miss, clickedRoad, missArray, board, road, isLocked, firstSquare } = this.state;
-    // const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
-    if (isLocked || clickedRoad.includes(board[row][col]) || board[row][col] === firstSquare) return;
+    const { clickedRoad, missArray, board, road, isLocked, firstSquare } = this.state;
+    if (isLocked || 
+      clickedRoad.includes(board[row][col]) || 
+      missArray.includes(board[row][col]) ||
+      board[row][col] === firstSquare)
+      return;
 
     if (road.includes(board[row][col])) {
       this.setState(prevState => ({
         lastClickedIndex: prevState.lastClickedIndex + 1,
         clickedRoad: [...prevState.clickedRoad, board[row][col]]
       }), () => {
-        console.log(this.state.lastClickedIndex, road.length)
-        console.log(this.state.clickedRoad)
         if (this.state.lastClickedIndex === road.length) {
           console.log("You got it everything")
+          this.ifWin();
         }
       })
     } else {
@@ -240,7 +339,6 @@ class Board extends React.Component {
         miss: prevState.miss + 1,
         missArray: [...missArray, board[row][col]]
       }), () => {
-        console.log("Miss is numer", this.state.miss)
         if (this.state.miss > 2) {
           console.log("You failed")
         }
@@ -249,25 +347,56 @@ class Board extends React.Component {
   }
 
   renderBoardAndRoad() {
-    const { firstSquare, board, road, time, isStarted, clickedRoad, missArray, isLocked, amountOfSquares } = this.state
+    const { 
+
+      isButtonClicked,
+      isStarted,
+      isVisible,
+      isLocked, 
+      isWin, 
+      
+      firstSquare,
+      board,
+      road, 
+      time, 
+      draw,
+       
+      clickedRoad, 
+      missArray, 
+      amountOfSquares, 
+     
+    } = this.state
+
     return board.map((row, i) => {
       return row.map((col, j) => {
         return (
           <Square
-            isStarted={isStarted}
-            isLocked={isLocked}
-            road={road}
-            partOfRoad={road.filter(part => (part === col ? part : null))}
-            duration={road.map((square, index) => (square === col ? (index + 1) * time : null))}
+            //map and filter
+            // duration={this.setSquareDuration(this.state.road, col)} 
+
+            // index={road.map((square, index) => (square === col ? index : null))} 
+            // partOfRoad={road.filter(part => (part === col ? part : null))}
             firstSquare={firstSquare === col ? firstSquare : null}
-            key={`${i}${j}`}
-            row={i}
-            col={j}
-            index={road.map((square, index) => (square === col ? index : null))}
+
+            // variables
+            amountOfSquares={amountOfSquares}
             clickedRoad={clickedRoad}
             missArray={missArray}
+            key={`${i}${j}`}
             time={time}
-            amountOfSquares={amountOfSquares}
+            row={i}
+            col={j}
+
+            // flags
+            isButtonClicked={isButtonClicked}
+            isvisible={isVisible}
+            isStarted={isStarted}
+            isLocked={isLocked}
+            isWin={isWin}
+            road={road}
+            draw={draw}
+
+            // handlers
             handleClick={this.checkRoad}
           ></Square>
         );
@@ -275,14 +404,13 @@ class Board extends React.Component {
     });
   }
   render() {
-    const { isLocked } = this.state;
+    const { isButtonDisabled } = this.state;
     return (
       <div className="game">
         <div className="board">{this.renderBoardAndRoad()}</div>
-        <button disabled={!isLocked} className="game__start-button" onClick={this.buttonListener}>
+        <button disabled={isButtonDisabled} className="game__start-button" onClick={this.buttonListener}>
           START
         </button>
-        {this.state.lastClickedIndex}
       </div>
     );
   }
