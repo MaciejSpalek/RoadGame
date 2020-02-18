@@ -8,7 +8,7 @@ const Counter = () => {
         return () => clearInterval(timer)
     }, [counter])
     return (
-        <span className="game__counter" >Countdown: {counter}</span>
+        <span className="game__parameter game__parameter--counter" >{counter}s</span>
     )
 }
 
