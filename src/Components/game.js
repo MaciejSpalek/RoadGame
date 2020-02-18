@@ -248,34 +248,30 @@ class Board extends React.Component {
       })
     }, setDuration({ amountOfSquares, time }, 5500))
   }
-  removeDrawnSquares() {
-    const timerId = setTimeout(() => {
-      this.setState({
-        clickedRoad: [],
-        firstSquare: null,
-      })
-    }, 500)
-    return () => clearTimeout(timerId)
-  }
+
   ifWin() {
+    this.setState({
+      areSquaresLocked: true
+    })
     setTimeout(() => {
       this.setState(prevState => ({
         isButtonDisabled: false, // turn on button
         isButtonClicked: false,
         isStarted: false,
-        areSquaresLocked: true, // disable click on squares
+        // areSquaresLocked: true, // disable click on squares
         isWin: true,
 
         missArray: [],
         road: [],
+        clickedRoad: [],
+        firstSquare: null,
         level: prevState.level + 1,
         amountOfSquares: prevState.amountOfSquares + 2,
         lastClickedIndex: 0,
         buttonCaption: "NEXT LEVEL",
         partOfRoad: []
       }))
-      this.removeDrawnSquares()
-    }, 300);
+    }, 1000);
   }
   checkRoad = (row, col, e) => {
     e.preventDefault()
@@ -346,13 +342,14 @@ class Board extends React.Component {
     const { isButtonDisabled, buttonCaption, miss, level, counterIsVisible } = this.state;
     return (
       <div className="game">
-        {counterIsVisible ? <Counter /> : false}
+
         <div className="game__topbox">
-          <span className="game__level">Level {level}</span>
-          <span className="game__miss">&#10084; {10 - miss} </span>
+          <span className="game__parameter">Level {level}</span>
+          {counterIsVisible ? <Counter /> : false}
+          <span className="game__parameter">&#10084; {10 - miss} </span>
         </div>
         <div className="game__board">{this.renderBoardAndRoad()}</div>
-        <button className="game__button" disabled={isButtonDisabled} onClick={this.buttonListener}>
+        <button className={isButtonDisabled ? "game__button game__button--disabled" : "game__button"} disabled={isButtonDisabled} onClick={this.buttonListener}>
           {buttonCaption}
         </button>
       </div>

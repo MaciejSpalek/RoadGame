@@ -6,16 +6,6 @@
 	height: 100vh;
 	background-color: #171717;
 	position: relative;
-	&__counter {
-		position: absolute;
-		top: 5%;
-		left: 20%;
-		font-size: 2.4rem;
-		font-weight: 600;
-		color: rgb(255, 251, 30);
-		animation: showCounter .5s cubic-bezier(0.47, 0, 0.745, 0.715) both;
-	}
-
 	&__topbox {
 		display: flex;
 		justify-content: space-between;
@@ -30,16 +20,13 @@
 		padding: 0 10px;
 	}
 
-	&__level {
+	&__parameter {
 		font-size: 1.5em;
 		font-weight: bold;
 		color: rgb(255, 251, 30);
-	}
-
-	&__miss {
-		font-size: 1.5em;
-		font-weight: bold;
-		color: rgb(255, 251, 30);
+		&--counter {
+			font-size: 2rem;
+		}
 	}
 
 	&__board {
@@ -74,6 +61,11 @@
 			border: 4px solid rgb(72, 0, 145);
 			color: rgb(93, 95, 64);
 		}
+	}
+	&__button--disabled {
+		background-color: rgb(25, 0, 49);
+		border: 4px solid rgb(72, 0, 145);
+		color: rgb(93, 95, 64);
 	}
 }
 
