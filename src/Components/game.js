@@ -14,11 +14,12 @@ class Board extends React.Component {
       clickedRoad: [],
       missArray: [],
       partOfRoad: [],
+      busyArray: [],
 
       // variables
       dimension: 10,
-      time: 1000,
-      amountOfSquares: 3,
+      time: 1,
+      amountOfSquares: 20,
       firstSquare: null,
       lastClickedIndex: 0,
       miss: 0,
@@ -82,6 +83,16 @@ class Board extends React.Component {
     }
   }
   setSingleSquare(roadArray, firstSquare, i) {
+    if (this.state.busyArray.length > 3) {
+      console.log("I'm here")
+      this.setState({
+        road: [],
+        firstSquare: null,
+        busyArray: []
+      }, () => this.drawFirstSquare())
+    }
+
+
     const { board } = this.state;
     const direction = this.getDirection();
 
@@ -95,13 +106,28 @@ class Board extends React.Component {
       row = +roadArray[roadArray.length - 1].substr(0, 1);
       col = +roadArray[roadArray.length - 1].substr(1, 1);
     }
-
+    // if()
     // up
+    // console.log(this.state.busyArray)
+    console.log(this.state.firstSquare)
+
+
+
+
     if (direction === 0) {
+      // console.log("up");
+
       if (row - 1 >= 0 && !this.isBusySquare(roadArray, row - 1, col)) {
+        console.log(row - 1, col);
         firstSquare = board[row - 1][col];
         roadArray.push(firstSquare);
+        this.setState({
+          busyArray: []
+        })
       } else {
+        this.setState({
+          busyArray: [...this.state.busyArray, direction]
+        })
         return this.setSingleSquare(roadArray, firstSquare, i);
       }
     }
@@ -122,10 +148,19 @@ class Board extends React.Component {
 
     // right
     else if (direction === 1) {
+      // console.log("right");
+
       if (col + 1 <= 9 && !this.isBusySquare(roadArray, row, col + 1)) {
+        console.log(row, col + 1);
         firstSquare = board[row][col + 1];
         roadArray.push(firstSquare);
+        this.setState({
+          busyArray: []
+        })
       } else {
+        this.setState({
+          busyArray: [...this.state.busyArray, direction]
+        })
         return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
@@ -144,10 +179,19 @@ class Board extends React.Component {
     // }
     // down
     else if (direction === 2) {
+      // console.log("down");
+
       if (row + 1 <= 9 && !this.isBusySquare(roadArray, row + 1, col)) {
+        console.log(row + 1, col);
         firstSquare = board[row + 1][col];
         roadArray.push(firstSquare);
+        this.setState({
+          busyArray: []
+        })
       } else {
+        this.setState({
+          busyArray: [...this.state.busyArray, direction]
+        })
         return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
@@ -167,10 +211,19 @@ class Board extends React.Component {
 
     // left
     else if (direction === 3) {
+      // console.log("left");
+
       if (col - 1 >= 0 && !this.isBusySquare(roadArray, row, col - 1)) {
+        console.log(row, col - 1);
         firstSquare = board[row][col - 1];
         roadArray.push(firstSquare);
+        this.setState({
+          busyArray: []
+        })
       } else {
+        this.setState({
+          busyArray: [...this.state.busyArray, direction]
+        })
         return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
@@ -188,6 +241,7 @@ class Board extends React.Component {
     //     return this.setSingleSquare(roadArray, firstSquare, i)
     //   }
     // }
+    // return this.setSingleSquare(roadArray, firstSquare, i);
   }
   getDirection() {
     return Math.round(Math.random() * 3);
@@ -206,7 +260,7 @@ class Board extends React.Component {
       isWin: false
     })
     await this.drawFirstSquare();
-    await this.setCounter();
+    // await this.setCounter();
     await this.unlockSquares();
     await this.updateRoad();
     await this.hideRoad();
@@ -319,10 +373,14 @@ class Board extends React.Component {
       partOfRoad,
       clickedRoad,
       missArray,
+      road
     } = this.state
+    // console.log(road)
+
     return board.map((row, i) => {
       return row.map((col, j) => {
-        console.log();
+        // console.log()
+        // console.log();
         return (
           <Square
             firstSquare={firstSquare === col ? firstSquare : null}
@@ -333,7 +391,8 @@ class Board extends React.Component {
             row={i}
             col={j}
             handleClick={this.checkRoad}
-          ></Square>
+            index={road.map((square, index) => (square === col ? index : null))}
+          ></Square >
         );
       });
     });
