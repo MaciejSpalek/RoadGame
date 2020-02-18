@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-const Square = ({ firstSquare, row, col, partOfRoad, handleClick, clickedRoad, missArray, }) => {
+const Square = ({ firstSquare, row, col, partOfRoad, handleClick, clickedRoad, missArray, index }) => {
   const squareClass = classNames({
     'square': true,
     'startSquare': firstSquare === `${row}${col}`,
@@ -10,7 +10,7 @@ const Square = ({ firstSquare, row, col, partOfRoad, handleClick, clickedRoad, m
     'missSquare': true ? missArray.filter(el => el === `${row}${col}`)[0] : false
   })
   return (
-    <div className={squareClass} onClick={(e) => handleClick(row, col, e)}></div >
+    <div className={squareClass} onClick={(e) => handleClick(row, col, e)}>{index}</div >
   );
 }
 
