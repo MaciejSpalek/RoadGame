@@ -6,8 +6,16 @@
 	height: 100vh;
 	background-color: #171717;
 	position: relative;
+	&__counter {
+		position: absolute;
+		top: 5%;
+		left: 20%;
+		font-size: 2.4rem;
+		font-weight: 600;
+		color: rgb(255, 251, 30);
+		animation: showCounter .5s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+	}
 
-	
 	&__topbox {
 		display: flex;
 		justify-content: space-between;
@@ -68,7 +76,6 @@
 		}
 	}
 }
-
 
 .square {
 	display: flex;
@@ -141,16 +148,6 @@
 		color: rgb(129, 0, 0);
 	}
 }
-.counter {
-	position: absolute;
-	top: 10%;
-	left: 20%;
-	font-size: 2rem;
-	font-weight: 600;
-	color: rgb(255, 251, 30);
-}
-
-
 
 @keyframes increaseVisibility {
 	from {
@@ -159,6 +156,15 @@
 	}
 	to {
 		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes showCounter {
+	from {
+		transform: scale(0);
+	}
+	to {
 		transform: scale(1);
 	}
 }

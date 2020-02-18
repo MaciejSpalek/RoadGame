@@ -2,6 +2,7 @@ import React from "react";
 import Square from "./Square";
 // import Counter from './Counter/Counter'
 import { setDuration } from "./lib/helpers"
+import Counter from "./Counter/Counter";
 
 class Board extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Board extends React.Component {
       // variables
       dimension: 10,
       time: 1000,
-      amountOfSquares: 8,
+      amountOfSquares: 3,
       firstSquare: null,
       lastClickedIndex: 0,
       miss: 0,
@@ -29,6 +30,7 @@ class Board extends React.Component {
       isButtonDisabled: false,
       isWin: false,
       areSquaresLocked: true,
+      counterIsVisible: false
     }
     this.buttonListener = this.buttonListener.bind(this);
     this.checkRoad = this.checkRoad.bind(this)
@@ -204,6 +206,7 @@ class Board extends React.Component {
       isWin: false
     })
     await this.drawFirstSquare();
+    await this.setCounter();
     await this.unlockSquares();
     await this.updateRoad();
     await this.hideRoad();
@@ -220,7 +223,7 @@ class Board extends React.Component {
     const tempArray = [];
     board.map((row) => {
       row.map((col) => {
-        if (col == road.filter(roadSquare => roadSquare == col ? col : null)[0]) {
+        if (col === road.filter(roadSquare => roadSquare === col ? col : null)[0]) {
           const duration = this.setSquareDuration(road, col);
           this.wait(tempArray, col, duration);
         }
@@ -240,9 +243,19 @@ class Board extends React.Component {
     const { amountOfSquares, time } = this.state;
     setTimeout(() => {
       this.setState({
-        partOfRoad: []
+        partOfRoad: [],
+        counterIsVisible: false
       })
-    }, setDuration({ amountOfSquares, time }, 5000))
+    }, setDuration({ amountOfSquares, time }, 5500))
+  }
+  removeDrawnSquares() {
+    const timerId = setTimeout(() => {
+      this.setState({
+        clickedRoad: [],
+        firstSquare: null,
+      })
+    }, 500)
+    return () => clearTimeout(timerId)
   }
   ifWin() {
     setTimeout(() => {
@@ -250,21 +263,19 @@ class Board extends React.Component {
         isButtonDisabled: false, // turn on button
         isButtonClicked: false,
         isStarted: false,
-        isLocked: true, // disable click on squares
+        areSquaresLocked: true, // disable click on squares
         isWin: true,
 
-        clickedRoad: [],
         missArray: [],
         road: [],
         level: prevState.level + 1,
         amountOfSquares: prevState.amountOfSquares + 2,
         lastClickedIndex: 0,
-        firstSquare: null,
         buttonCaption: "NEXT LEVEL",
         partOfRoad: []
       }))
-    }, 1000);
-
+      this.removeDrawnSquares()
+    }, 300);
   }
   checkRoad = (row, col, e) => {
     e.preventDefault()
@@ -296,14 +307,14 @@ class Board extends React.Component {
       })
     }
   }
-  async setCounter() {
+  setCounter() {
     const { amountOfSquares, time } = this.state
     setTimeout(() => {
       console.log('counter is started')
       this.setState({
         counterIsVisible: true
       })
-    }, await setDuration({ amountOfSquares, time }, -200))
+    }, setDuration({ amountOfSquares, time }, 0))
   }
   renderBoardAndRoad() {
     const {
@@ -312,7 +323,6 @@ class Board extends React.Component {
       partOfRoad,
       clickedRoad,
       missArray,
-      road
     } = this.state
     return board.map((row, i) => {
       return row.map((col, j) => {
@@ -326,7 +336,6 @@ class Board extends React.Component {
             key={`${i}${j}`}
             row={i}
             col={j}
-            road={road}
             handleClick={this.checkRoad}
           ></Square>
         );
@@ -334,9 +343,10 @@ class Board extends React.Component {
     });
   }
   render() {
-    const { isButtonDisabled, buttonCaption, miss, level } = this.state;
+    const { isButtonDisabled, buttonCaption, miss, level, counterIsVisible } = this.state;
     return (
       <div className="game">
+        {counterIsVisible ? <Counter /> : false}
         <div className="game__topbox">
           <span className="game__level">Level {level}</span>
           <span className="game__miss">&#10084; {10 - miss} </span>

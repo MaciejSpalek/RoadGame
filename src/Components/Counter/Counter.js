@@ -3,12 +3,12 @@ import React, { useState, useEffect } from "react"
 const Counter = () => {
     const [counter, setCounter] = useState(5)
     useEffect(() => {
-        counter > 0 && setTimeout(() => {
-            setCounter(counter - 1)
-        }, 1000)
+        const timer =
+            counter > 0 && setInterval(() => setCounter(counter - 1), 1000)
+        return () => clearInterval(timer)
     }, [counter])
     return (
-        <span className="counter" >Countdown: {counter}</span>
+        <span className="game__counter" >Countdown: {counter}</span>
     )
 }
 
