@@ -2,15 +2,16 @@ import React from "react";
 import classNames from "classnames";
 
 const Square = ({ firstSquare, row, col, partOfRoad, handleClick, clickedRoad, missArray, index }) => {
+  const squareValue = `${row}${col}`; 
   const squareClass = classNames({
     'square': true,
-    'startSquare': firstSquare === `${row}${col}`,
-    'drawRoad': true ? partOfRoad.includes(`${row}${col}`) : false,
-    'hitSquare': true ? clickedRoad.filter(el => el === `${row}${col}`)[0] : false,
-    'missSquare': true ? missArray.filter(el => el === `${row}${col}`)[0] : false
+    'startSquare': firstSquare === squareValue,
+    'drawRoad': partOfRoad.includes(squareValue),
+    'hitSquare': clickedRoad.filter(el => el === squareValue)[0],
+    'missSquare': missArray.filter(el => el === squareValue)[0]
   })
   return (
-    <div className={squareClass} onClick={(e) => handleClick(row, col, e)}>{index}</div >
+    <div className={squareClass} onClick={(e) => handleClick(squareValue, index, e)}>{index}</div >
   );
 }
 
