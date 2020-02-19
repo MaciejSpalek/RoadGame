@@ -19,7 +19,7 @@ class Board extends React.Component {
       // variables
       dimension: 10,
       time: 1,
-      amountOfSquares: 20,
+      amountOfSquares: 40,
       firstSquare: null,
       lastClickedIndex: 0,
       miss: 0,
@@ -31,7 +31,8 @@ class Board extends React.Component {
       isButtonDisabled: false,
       isWin: false,
       areSquaresLocked: true,
-      counterIsVisible: false
+      counterIsVisible: false,
+      isBusyArray: false
     }
     this.buttonListener = this.buttonListener.bind(this);
     this.checkRoad = this.checkRoad.bind(this)
@@ -67,13 +68,26 @@ class Board extends React.Component {
     await this.setRoad(this.state.firstSquare);
     // console.log(`first: ${this.state.firstSquare} road: ${this.state.road}`);
   }
-  
+
   setRoad = firstSquare => {
     const roadArray = [];
-    for (let i = 0; i < this.state.amountOfSquares-1; i++) {
-      this.setSingleSquare(roadArray, firstSquare, i);
+    this.setState({
+      isBusyArray: false
+    })
+    for (let i = 0; i < this.state.amountOfSquares; i++) {
+      if (this.state.isBusyArray) {
+        // console.log(i, "isBusyArray: true")
+        break;
+      } else {
+        // console.log(i, "isBusyArray: false");
+        this.setSingleSquare(roadArray, firstSquare, i);
+      }
     }
-    this.setState({ road: roadArray });
+    // console.log("Current road -->", this.state.road)
+    if (!this.state.isBusyArray) {
+      this.setState({ road: roadArray });
+      // console.log("Set road -->", this.state.road)
+    }
   }
   isBusySquare(roadArray, row, col) {
     for (let i = 0; i < roadArray.length; i++) {
@@ -86,7 +100,7 @@ class Board extends React.Component {
     }
   }
   setBusyState(direction) {
-    if(!this.state.busyArray.includes(direction)) {
+    if (!this.state.busyArray.includes(direction)) {
       this.setState({
         busyArray: [...this.state.busyArray, direction]
       })
@@ -96,8 +110,10 @@ class Board extends React.Component {
     if (this.state.busyArray.length > 3) {
       this.setState({
         road: [],
-        busyArray: []
+        busyArray: [],
+        isBusyArray: true
       })
+      // console.log("Cleaned road -->", this.state.road, this.state.busyArray, this.state.isBusyArray)
       return this.drawFirstSquare();
     }
 
@@ -124,7 +140,7 @@ class Board extends React.Component {
         this.setState({
           busyArray: []
         })
-        console.log(`Direction ===> ${direction}, Square[${row-1}][${col}], ITER: ${i}`);
+        // console.log(`Direction ===> ${direction}, Square[${row - 1}][${col}], ITER: ${i}`);
       } else {
         this.setBusyState(direction)
         return this.setSingleSquare(roadArray, firstSquare, i);
@@ -155,7 +171,7 @@ class Board extends React.Component {
         this.setState({
           busyArray: []
         })
-        console.log(`Direction ===> ${direction}, Square[${row}][${col+1}], ITER: ${i}`);
+        // console.log(`Direction ===> ${direction}, Square[${row}][${col + 1}], ITER: ${i}`);
       } else {
         this.setBusyState(direction)
         return this.setSingleSquare(roadArray, firstSquare, i)
@@ -184,7 +200,7 @@ class Board extends React.Component {
         this.setState({
           busyArray: []
         })
-        console.log(`Direction ===> ${direction}, Square[${row+1}][${col}], ITER: ${i}`);
+        // console.log(`Direction ===> ${direction}, Square[${row + 1}][${col}], ITER: ${i}`);
       } else {
         this.setBusyState(direction)
         return this.setSingleSquare(roadArray, firstSquare, i)
@@ -214,7 +230,7 @@ class Board extends React.Component {
         this.setState({
           busyArray: []
         })
-        console.log(`Direction ===> ${direction}, Square[${row}][${col-1}], ITER: ${i}`);
+        // console.log(`Direction ===> ${direction}, Square[${row}][${col - 1}], ITER: ${i}`);
       } else {
         this.setBusyState(direction)
         return this.setSingleSquare(roadArray, firstSquare, i)
