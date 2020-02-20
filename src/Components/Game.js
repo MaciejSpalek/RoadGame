@@ -3,8 +3,9 @@ import Square from "./Square";
 import classNames from "classnames";
 import { setDuration } from "./lib/helpers"
 import Counter from "./Counter/Counter";
+import ButtonOfLevel from "./ButtonOfLevel/ButtonOfLevel"
 
-class Board extends React.Component {
+class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,29 +21,32 @@ class Board extends React.Component {
       // variables
       dimension: 10,
       time: 500,
-      amountOfSquares: 5,
+      amountOfSquares: 3,
       firstSquare: null,
       lastClickedIndex: 0,
       miss: 0,
       level: 1,
       buttonCaption: "START",
       topBoxInformation: "",
+      amountOfLives: 15,
 
       // flags
-      isButtonDisabled: false,
+      isButtonDisabled: true,
       isDeletingMiss: false,
       areSquaresLocked: true,
-      counterIsVisible: false,
-      isBusyArray: false
+      isCounterVisible: false,
+      isBusyArray: false,
+      isButtonsOfLevelVisible: true,
+      isChangeLevelButtonDisabled: false
     }
-    this.buttonListener = this.buttonListener.bind(this);
+    this.handleStart = this.handleStart.bind(this);
     this.checkRoad = this.checkRoad.bind(this)
     this.timeForDrawId = null;
     this.timeForHideId = null;
   }
   componentDidMount() {
     this.setState({
-      board: this.createBoard()
+      board: this.createBoard(),
     });
   }
   createBoard() {
@@ -205,10 +209,11 @@ class Board extends React.Component {
       })
     }, setDuration({ amountOfSquares, time }, 5000))
   }
-  buttonListener = async () => {
+  handleStart = async () => {
     await this.setState({
       isButtonDisabled: true,
-      isWin: false
+      isWin: false,
+      isChangeLevelButtonDisabled: true
     })
     await this.drawFirstSquare();
     await this.setCounter();
@@ -223,6 +228,9 @@ class Board extends React.Component {
   }
   updateRoad() {
     const { road, board } = this.state;
+    // if (!this.state.isButtonsOfLevelVisible) {
+    //   break;
+    // }
     const tempArray = [];
     board.map((row) => {
       row.map((col) => {
@@ -246,7 +254,7 @@ class Board extends React.Component {
     setTimeout(() => {
       this.setState({
         partOfRoad: [],
-        counterIsVisible: false
+        isCounterVisible: false
       })
     }, setDuration({ amountOfSquares, time }, 5500))
   }
@@ -256,17 +264,11 @@ class Board extends React.Component {
     })
     setTimeout(() => {
       this.setState(prevState => ({
-        isButtonDisabled: false,
-        missArray: [],
-        road: [],
-        clickedRoad: [],
-        partOfRoad: [],
-        firstSquare: null,
         level: prevState.level + 1,
         amountOfSquares: prevState.amountOfSquares + 2,
-        lastClickedIndex: 0,
         buttonCaption: "NEXT LEVEL",
       }))
+      this.clenStateOfGame()
     }, 1000);
   }
 
@@ -274,24 +276,17 @@ class Board extends React.Component {
     this.setState({
       // isButtonDisabled: true,
       areSquaresLocked: true,
-      isGameOver: true 
+      isGameOver: true
     })
     setTimeout(() => {
       this.setState(prevState => ({
-        isButtonDisabled: false, // turn on button
         isGameOver: false,
-        clickedRoad: [],
-        partOfRoad: [],
-        missArray: [],
-        road: [],
-
         buttonCaption: "START",
-        lastClickedIndex: 0,
         amountOfSquares: 3, // to change
-        firstSquare: null,
         level: 1,
         miss: 0
       }))
+      this.clenStateOfGame()
     }, 6000);
   }
   deleteInformation() {
@@ -313,10 +308,10 @@ class Board extends React.Component {
     return array.slice(0, array.length);
   }
   checkRoad = (currentSquare, index, e) => {
-   e.preventDefault()
-   const { clickedRoad, missArray, road, areSquaresLocked, firstSquare, lastClickedIndex, isDeletingMiss } = this.state;
-   const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
-   
+    e.preventDefault()
+    const { clickedRoad, missArray, road, areSquaresLocked, firstSquare, lastClickedIndex, isDeletingMiss } = this.state;
+    const currentIndex = index.filter(el => typeof el == "number" ? el + 1 : null)[0];
+
     // prevent clicking in clickedSquare, missSquare, firstSquare and if isDeletingMiss
     if (areSquaresLocked ||
       clickedRoad.includes(currentSquare) ||
@@ -339,10 +334,10 @@ class Board extends React.Component {
           this.win();
         }
       })
-    } 
+    }
 
     // if hit includes in roadArray but doesn't agree with lastClicked
-    else if(road.includes(currentSquare) && currentIndex != lastClickedIndex) {
+    else if (road.includes(currentSquare) && currentIndex != lastClickedIndex) {
       console.log("Clicked in square from road, but lastClicked isn't correct")
       this.setState(prevState => ({
         miss: prevState.miss + 1,
@@ -350,7 +345,7 @@ class Board extends React.Component {
         topBoxInformation: "Wrong order!",
         isDeletingMiss: true
       }), () => {
-        if (this.state.miss >= 10) {
+        if (this.state.miss >= this.state.amountOfLives) {
           console.log("You failed")
           this.gameOver();
         }
@@ -367,7 +362,7 @@ class Board extends React.Component {
         topBoxInformation: "Miss!"
       }), () => {
         this.deleteInformation()
-        if (this.state.miss >= 10) {
+        if (this.state.miss >= this.state.amountOfLives) {
           console.log("You failed")
           this.gameOver();
         }
@@ -379,9 +374,39 @@ class Board extends React.Component {
     setTimeout(() => {
       console.log('counter is started')
       this.setState({
-        counterIsVisible: true
+        isCounterVisible: true,
+        isChangeLevelButtonDisabled: false
       })
     }, setDuration({ amountOfSquares, time }, 0))
+  }
+  setDifficultyLevel = (amountOfSquares, time, amountOfLives) => {
+    this.setState({
+      amountOfSquares: amountOfSquares,
+      time: time,
+      amountOfLives: amountOfLives,
+      isButtonsOfLevelVisible: false,
+      isButtonDisabled: false,
+      isCounterVisible: false,
+    })
+    this.clenStateOfGame();
+  }
+  handleChangeLevel = () => {
+    this.setState({
+      isButtonsOfLevelVisible: true,
+
+    })
+    this.clenStateOfGame();
+  }
+  clenStateOfGame() {
+    this.setState({
+      missArray: [],
+      road: [],
+      clickedRoad: [],
+      partOfRoad: [],
+      firstSquare: null,
+      isButtonDisabled: false, // turn on button
+      lastClickedIndex: 0,
+    })
   }
   renderBoard() {
     const {
@@ -412,34 +437,75 @@ class Board extends React.Component {
     });
   }
   render() {
-    const { isButtonDisabled, buttonCaption, miss, level, counterIsVisible, topBoxInformation, isGameOver } = this.state;
+    const { isButtonDisabled, buttonCaption, miss, level, isCounterVisible, topBoxInformation, isGameOver, amountOfLives, isButtonsOfLevelVisible, isChangeLevelButtonDisabled } = this.state;
     const informationClass = classNames({
-      "game__information game__information--correct" : this.state.topBoxInformation == "Nice shot!",
-      "game__information game__information--wrong" : this.state.topBoxInformation == "Wrong order!",
-      "game__information game__information--miss" : this.state.topBoxInformation == "Miss!",
-      "game__information game__information--none" : this.state.topBoxInformation == "",
+      "game__information game__information--correct": this.state.topBoxInformation == "Nice shot!",
+      "game__information game__information--wrong": this.state.topBoxInformation == "Wrong order!",
+      "game__information game__information--miss": this.state.topBoxInformation == "Miss!",
+      "game__information game__information--none": this.state.topBoxInformation == "",
     })
+    const Easy = "Easy"
+    const Normal = "Normal"
+    const Expert = "Expert"
 
     return (
       <div className="game">
         <div className="game__topbox">
-          <span className="game__parameter">Level {level}</span>
-          {counterIsVisible ? <Counter /> : false}
-          <span className={informationClass}> { topBoxInformation }</span>
-          <span className="game__parameter">&#10084; {10 - miss} </span>
+          <span className="game__parameter">Map {level}</span>
+          {isCounterVisible ? <Counter /> : false}
+          <span className={informationClass}> {topBoxInformation}</span>
+          <span className="game__parameter">&#10084; {amountOfLives - miss} </span>
         </div>
         <div className="game__board">
-          <span className={ isGameOver ? "board__gameOverCaption" : "board__gameOverCaption--none"  }></span>
+          <span className={isGameOver ? "board__gameOverCaption" : "board__gameOverCaption--none"}></span>
           {
             this.renderBoard()
           }
         </div>
-        <button className={isButtonDisabled ? "game__button game__button--disabled" : "game__button"} disabled={isButtonDisabled} onClick={this.buttonListener}>
+        <button
+          className={isButtonDisabled ? "game__button game__button--disabled" : "game__button"}
+          disabled={isButtonDisabled}
+          onClick={this.handleStart}>
           {buttonCaption}
         </button>
-      </div>
+        <button
+          className={isChangeLevelButtonDisabled ? "game__button game__button--disabled" : "game__button"}
+          onClick={this.handleChangeLevel}
+          disabled={isChangeLevelButtonDisabled}
+        >
+          Change level
+          </button>
+        {isButtonsOfLevelVisible ?
+          <>
+            <div className="game__level-buttons-wrapper">
+              <h1>Road Game</h1>
+              <p>Chose your path or die!</p>
+              <div className="">
+                <ButtonOfLevel
+                  handleClick={this.setDifficultyLevel}
+                  nameLevel={Easy}
+                  amountOfSquares={3}
+                  time={500}
+                  amountOfLives={15} />
+                <ButtonOfLevel
+                  handleClick={this.setDifficultyLevel}
+                  nameLevel={Normal}
+                  amountOfSquares={6}
+                  time={400}
+                  amountOfLives={10} />
+                <ButtonOfLevel
+                  handleClick={this.setDifficultyLevel}
+                  nameLevel={Expert}
+                  amountOfSquares={9}
+                  time={300}
+                  amountOfLives={5} />
+              </div>
+            </div>
+          </>
+          : null}
+      </div >
     );
   }
 }
 
-export default Board;
+export default Game;
