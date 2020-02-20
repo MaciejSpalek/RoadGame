@@ -1,6 +1,6 @@
 import React from "react"
 
-const ButtonOfLevel = ({ handleClick, nameLevel, amountOfSquares, time, amountOfLives }) => {
+const ButtonOfLevel = ({ handleClick, nameLevel, amountOfSquares, amountOfLives, time }) => {
     return (
         <button
             className="game__level-button game__button"

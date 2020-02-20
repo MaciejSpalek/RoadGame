@@ -5,7 +5,10 @@
 	flex-direction: column;
 	height: 100vh;
 	width: 100%;
-	background-color: #171717;
+	// background-color: #171717;
+	background-image: url("../Images/bgImage.jpg");
+	background-position: center;
+	background-size: cover;
 	position: relative;
 	&__topbox {
 		display: flex;
@@ -41,12 +44,12 @@
 		border: 8px solid rgb(71, 0, 143);
 		border-bottom-left-radius: 10px;
 		border-bottom-right-radius: 10px;
-		background-color: rgb(58, 1, 116);
+		background-color: rgba(59, 1, 116, 0.938);
 		margin: 0px auto 10px;
 	}
 
 	&__button {
-		height: 70px;
+		height: 50px;
 		width: 300px;
 		border: none;
 		font-size: 2em;
@@ -54,10 +57,21 @@
 		color: rgb(255, 251, 30);
 		background-color: rgb(58, 1, 116);
 		border: 4px solid rgb(71, 0, 143);
+		box-shadow: -.1em .1em .1em .1em black;
 		border-radius: 10px;
 		outline: none;
 		transition: .4s;
+		margin: 5px;
 		cursor: pointer;
+		&:first-child {
+			animation: startAnimation .3s .6s ease-in both;
+		}
+		&:nth-child(2) {
+			animation: startAnimation .3s .9s ease-in both;
+		}
+		&:nth-child(3) {
+			animation: startAnimation .3s 1.2s ease-in both;
+		}
 		&:hover {
 			background-color: rgb(25, 0, 49);
 			border: 4px solid rgb(72, 0, 145);
@@ -84,11 +98,48 @@
 			color: red;
 		}
 	}
-	&__level-buttons-wrapper {
+	&__start-layer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		position: absolute;
-		background-color: #fff;
+		// background-color: #171717;
+		background-image: url("../Images/bgImage.jpg");
+		background-position: center;
+		background-size: cover;
 		height: 100vh;
 		width: 100vw;
+	}
+
+	&__inner-wrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-direction: column;
+		background-color: rgba(0, 0, 0, 0.822);
+		height: 80%;
+		border-radius: 20px;
+		padding: 30px;
+	}
+	&__buttonBox {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__title {
+		font-size: 7em;
+		font-weight: bold;
+		text-shadow: -.05em .05em .03em black;
+		color: rgb(255, 251, 30);
+		animation: startAnimation .3s ease-in both;
+	}
+
+	&__subtitle {
+		font-size: 2.5em;
+		font-weight: bold;
+		text-shadow: -.05em .05em .03em black;
+		color: rgb(255, 251, 30);
+		animation: startAnimation .3s .3s ease-in both;
 	}
 }
 
@@ -100,13 +151,13 @@
 	width: 100%;
 	height: 100%;
 	z-index: 999;
-	animation: gameOverAnimation 6s cubic-bezier(0.77, 0, 0.175, 1) both;
 	&::before {
 		content: "Game Over";
 		position: absolute;
 		font-size: 5em;
 		color: rgb(255, 251, 30);
 		text-shadow: -.05em .05em 0.05em black;
+		animation: gameOverAnimation 4s cubic-bezier(0.77, 0, 0.175, 1) both;
 	}
 	&--none {
 		display: none;
@@ -123,38 +174,36 @@
 	color: rgb(71, 0, 143);
 	font-size: 1.5em;
 	font-weight: bold;
+	box-shadow: inset 0 0 4px 1.5px rgb(20, 0, 15);
 	cursor: pointer;
 	&:hover {
-		background-color: rgba(0, 0, 0, 0.24);
-		box-shadow: inset 0 0 1.5px 1.5px rgb(20, 0, 15);
+		background-color: rgba(0, 0, 0, 0.445);
+		box-shadow: inset 0 0 4px 1.5px rgb(0, 0, 0);
 	}
 }
 
 .startSquare {
 	animation: increaseVisibility .5s cubic-bezier(0.47, 0, 0.745, 0.715) both;
 	background-color: rgb(255, 136, 0);
-	box-shadow: inset 0 0 1.5px 1.5px rgb(150, 72, 0);
+	box-shadow: inset 0 0 4px 1.5px rgb(0, 0, 0);
 	&:hover {
-		background-color: rgb(105, 0, 97);
-		box-shadow: inset 0 0 1.5px 1.5px rgb(20, 0, 15);
+		background-color: rgb(185, 100, 3);
 	}
 }
 .drawRoad {
 	animation: increaseVisibility .5s cubic-bezier(0.47, 0, 0.745, 0.715) both;
 	background-color: rgb(185, 236, 0);
-	box-shadow: inset 0 0 1.5px 1.5px rgb(112, 110, 0);
+	box-shadow: inset 0 0 4px 1.5px rgb(0, 0, 0);
 	&:hover {
 		background-color: rgb(137, 175, 0);
-		box-shadow: inset 0 0 1.5px 1.5px rgb(54, 53, 0);
 	}
 }
 .hitSquare {
 	animation: increaseVisibility .5s cubic-bezier(0.47, 0, 0.745, 0.715) both;
 	background-color: rgb(0, 218, 0);
-	box-shadow: inset 0 0 1.5px 1.5px rgb(0, 105, 0);
+	box-shadow: inset 0 0 4px 1.5px rgb(0, 0, 0);
 	&:hover {
-		background-color: rgb(0, 78, 0);
-		box-shadow: inset 0 0 1.5px 1.5px rgb(0, 29, 0);
+		background-color: rgb(0, 112, 0);
 	}
 }
 
@@ -164,7 +213,7 @@
 	background-color: rgba(255, 0, 0, 0.384);
 	&:hover {
 		background-color: rgba(175, 0, 0, 0.384);
-		box-shadow: inset 0 0 1.5px 1.5px rgb(29, 0, 0);
+		box-shadow: inset 0 0 4px 1.5px rgb(29, 0, 0);
 	}
 	&::before {
 		content: "\2716";
@@ -199,8 +248,7 @@
 @keyframes showCounter {
 	from {
 		transform: scale(0);
-	}
-	to {
+	} to {
 		transform: scale(1);
 	}
 }
@@ -212,13 +260,25 @@
 
 	40% {
 		transform: scale(1) rotate(360deg);
+		color: red;
 	}
 
 	60% {
 		transform: scale(1) rotate(360deg);
+		color: red;
 	}
 
 	to {
 		transform: scale(0) rotate(0deg);
+	}
+}
+
+
+
+@keyframes startAnimation {
+	from {
+		opacity: 0;
+	} to {
+		opacity: 1;
 	}
 }
