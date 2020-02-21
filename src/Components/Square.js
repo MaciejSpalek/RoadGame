@@ -5,13 +5,13 @@ const Square = ({ firstSquare, row, col, partOfRoad, handleClick, clickedRoad, m
   const squareValue = `${row}${col}`; 
   const squareClass = classNames({
     'square': true,
-    'startSquare': firstSquare === squareValue,
-    'drawRoad': partOfRoad.includes(squareValue),
+    'startSquare': firstSquare === squareValue || partOfRoad[partOfRoad.length-1] === squareValue,
+    'drawRoad': partOfRoad.includes(squareValue) && partOfRoad[partOfRoad.length-1] !== squareValue,
     'hitSquare': clickedRoad.filter(el => el === squareValue)[0],
     'missSquare': missArray.filter(el => el === squareValue)[0]
   })
   return (
-    <div className={squareClass} onClick={(e) => handleClick(squareValue, index, e)}>{index}</div >
+    <div className={squareClass} onClick={(e) => handleClick(squareValue, index, e)}></div >
   );
 }
 
