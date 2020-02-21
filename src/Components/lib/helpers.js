@@ -1,6 +1,14 @@
 
-function setDuration({ amountOfSquares, time }, myTime) {
+const setDuration = ({ amountOfSquares, time }, myTime) => {
     return (amountOfSquares * time) + myTime;
 }
 
-export { setDuration };
+const getDirection = () => {
+    return Math.round(Math.random() * 3);
+}
+
+const deleteLastArrayElement = (array) => {
+    return array.slice(0, array.length);
+}
+
+export { setDuration, getDirection, deleteLastArrayElement };

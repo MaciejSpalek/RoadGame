@@ -1,7 +1,7 @@
 import React from "react";
 import Square from "./Square";
 import classNames from "classnames";
-import { setDuration } from "./lib/helpers"
+import { setDuration, getDirection, deleteLastArrayElement } from "./lib/helpers"
 import Counter from "./Counter/Counter";
 import ButtonOfLevel from "./ButtonOfLevel/ButtonOfLevel"
 
@@ -75,8 +75,8 @@ class Game extends React.Component {
       isBusyArray: false
     })
     for (let i = 0; i < this.state.amountOfSquares; i++) {
-      if (this.state.isBusyArray) { break } 
-      else {this.setSingleSquare(roadArray, firstSquare, i);}
+      if (this.state.isBusyArray) { break }
+      else { this.setSingleSquare(roadArray, firstSquare, i); }
     }
     if (!this.state.isBusyArray) {
       this.setState({ road: roadArray });
@@ -110,7 +110,7 @@ class Game extends React.Component {
     }
 
     const { board } = this.state;
-    const direction = this.getDirection();
+    const direction = getDirection();
 
     let row;
     let col;
@@ -177,9 +177,6 @@ class Game extends React.Component {
         return this.setSingleSquare(roadArray, firstSquare, i)
       }
     }
-  }
-  getDirection() {
-    return Math.round(Math.random() * 3);
   }
   unlockSquares() {
     const { amountOfSquares, time } = this.state;
@@ -275,19 +272,17 @@ class Game extends React.Component {
         topBoxInformation: "",
         areSquaresLocked: false
       })
-    }, 1000);
+    }, 500);
   }
   deleteMiss(array) {
     setTimeout(() => {
       this.setState({
-        missArray: this.deleteLastArrayElement(array),
+        missArray: deleteLastArrayElement(array),
         isDeletingMiss: false
       })
-    }, 1000);
+    }, 500);
   }
-  deleteLastArrayElement(array) {
-    return array.slice(0, array.length);
-  }
+
   checkRoad = (currentSquare, index, e) => {
     e.preventDefault()
     const { clickedRoad, missArray, road, areSquaresLocked, firstSquare, lastClickedIndex, isDeletingMiss } = this.state;
@@ -353,7 +348,6 @@ class Game extends React.Component {
   setCounter() {
     const { amountOfSquares, time } = this.state
     setTimeout(() => {
-      console.log('counter is started')
       this.setState({
         isCounterVisible: true,
         isChangeLevelButtonDisabled: false
@@ -374,7 +368,9 @@ class Game extends React.Component {
   handleChangeLevel = () => {
     this.setState({
       isButtonsOfLevelVisible: true,
-      level:1
+      level: 1,
+      amountOfLives: 15,
+      miss: 0
     })
     this.cleanStateOfGame();
   }
@@ -420,17 +416,17 @@ class Game extends React.Component {
   }
 
   render() {
-    const { 
-      isButtonDisabled, 
-      buttonCaption, 
-      miss, 
-      level, 
-      isCounterVisible, 
-      topBoxInformation, 
-      isGameOver, 
-      amountOfLives, 
-      isButtonsOfLevelVisible, 
-      isChangeLevelButtonDisabled 
+    const {
+      isButtonDisabled,
+      buttonCaption,
+      miss,
+      level,
+      isCounterVisible,
+      topBoxInformation,
+      isGameOver,
+      amountOfLives,
+      isButtonsOfLevelVisible,
+      isChangeLevelButtonDisabled
     } = this.state;
 
     const informationClass = classNames({
@@ -447,7 +443,7 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game__topbox">
-          <span className="game__parameter">Map {level}</span>
+          <span className="game__parameter">Board {level}</span>
           {isCounterVisible ? <Counter /> : false}
           <span className={informationClass}> {topBoxInformation}</span>
           <span className="game__parameter">&#10084; {amountOfLives - miss} </span>
@@ -470,39 +466,39 @@ class Game extends React.Component {
           Change level
           </button>
         {isButtonsOfLevelVisible ?
-          
-            <div className="game__start-layer">
-              <div className="game__inner-wrapper">
-                <div>
-                  <h1 className="game__title">Road Game</h1>
-                  <p className="game__subtitle">Chose your path or die!</p>
-                </div>
-                <div className="game__buttonBox">
+
+          <div className="game__start-layer">
+            <div className="game__inner-wrapper">
+              <div>
+                <h1 className="game__title">Road Game</h1>
+                <p className="game__subtitle">Chose your path or die!</p>
+              </div>
+              <div className="game__buttonBox">
                 <ButtonOfLevel
                   handleClick={this.setDifficultyLevel}
                   nameLevel={Easy}
                   amountOfSquares={3}
                   time={1500}
-                  amountOfLives={15} 
+                  amountOfLives={15}
                 />
                 <ButtonOfLevel
                   handleClick={this.setDifficultyLevel}
                   nameLevel={Normal}
                   amountOfSquares={6}
                   time={1000}
-                  amountOfLives={10} 
+                  amountOfLives={10}
                 />
                 <ButtonOfLevel
                   handleClick={this.setDifficultyLevel}
                   nameLevel={Expert}
                   amountOfSquares={9}
                   time={500}
-                  amountOfLives={5} 
+                  amountOfLives={5}
                 />
               </div>
-              </div>
             </div>
-          
+          </div>
+
           : null}
       </div >
     );

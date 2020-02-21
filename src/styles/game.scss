@@ -1,3 +1,5 @@
+$mobile: 736px;
+
 .game {
 	display: flex;
 	justify-content: center;
@@ -10,6 +12,8 @@
 	background-position: center;
 	background-size: cover;
 	position: relative;
+	overflow: hidden;
+
 	&__topbox {
 		display: flex;
 		justify-content: space-between;
@@ -22,6 +26,9 @@
 		border: 4px solid rgb(71, 0, 143);
 		border-bottom: none;
 		padding: 0 10px;
+		@media (max-width: $mobile) {
+			max-width: 350px;
+		}
 	}
 
 	&__parameter,
@@ -46,6 +53,10 @@
 		border-bottom-right-radius: 10px;
 		background-color: rgba(59, 1, 116, 0.938);
 		margin: 0px auto 10px;
+		@media (max-width: $mobile) {
+			max-width: 350px;
+			max-height: 350px;
+		}
 	}
 
 	&__button {
@@ -120,6 +131,11 @@
 		height: 80%;
 		border-radius: 20px;
 		padding: 30px;
+		@media (max-width: $mobile) {
+			justify-content: flex-start;
+			border-radius: 0;
+			height: 100vh;
+		}
 	}
 	&__buttonBox {
 		display: flex;
@@ -132,6 +148,9 @@
 		text-shadow: -.05em .05em .03em black;
 		color: rgb(255, 251, 30);
 		animation: startAnimation .3s ease-in both;
+		@media (max-width: $mobile) {
+			font-size: 5em;
+		}
 	}
 
 	&__subtitle {
@@ -248,7 +267,8 @@
 @keyframes showCounter {
 	from {
 		transform: scale(0);
-	} to {
+	}
+	to {
 		transform: scale(1);
 	}
 }
@@ -273,12 +293,11 @@
 	}
 }
 
-
-
 @keyframes startAnimation {
 	from {
 		opacity: 0;
-	} to {
+	}
+	to {
 		opacity: 1;
 	}
 }
