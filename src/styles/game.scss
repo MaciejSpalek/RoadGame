@@ -1,67 +1,61 @@
-$mobile: 736px;
-
 .game {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	height: 100vh;
+	min-height: 100vh;
 	width: 100%;
-	// background-color: #171717;
 	background-image: url("../Images/bgImage.jpg");
 	background-position: center;
 	background-size: cover;
 	position: relative;
 	overflow: hidden;
 
-	&__topbox {
+	&__top-box {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		width: 500px;
-		height: 50px;
+		width: 300px;
+		height: 30px;
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		background-color: rgb(58, 1, 116);
 		border: 4px solid rgb(71, 0, 143);
 		border-bottom: none;
-		padding: 0 10px;
-		@media (max-width: $mobile) {
-			max-width: 350px;
-		}
+		padding: .8em;
 	}
-
-	&__parameter,
-	&__information {
-		font-size: 1.5em;
-		font-weight: bold;
-		color: rgb(255, 251, 30);
-		&--counter {
-			font-size: 2em;
-		}
-	}
-
+	&__board-layer {
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		flex-direction: column;
+		min-height: 100vh;
+		width: 100%;
+		padding: 1.5em .5em;
+		background-color: rgba(0, 0, 0, 0.8);
+	}	
 	&__board {
 		position: relative;
 		display: grid;
 		grid-template-rows: repeat(10, 1fr);
 		grid-template-columns: repeat(10, 1fr);
-		width: 500px;
-		height: 500px;
+		width: 300px;
+		height: 300px;
 		border: 8px solid rgb(71, 0, 143);
 		border-bottom-left-radius: 10px;
 		border-bottom-right-radius: 10px;
 		background-color: rgba(59, 1, 116, 0.938);
 		margin: 0px auto 10px;
-		@media (max-width: $mobile) {
-			max-width: 350px;
-			max-height: 350px;
-		}
 	}
-
+	&__board-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
 	&__button {
 		height: 50px;
-		width: 300px;
+		width: 250px;
 		border: none;
 		font-size: 2em;
 		font-weight: bold;
@@ -94,7 +88,14 @@ $mobile: 736px;
 		border: 4px solid rgb(72, 0, 145);
 		color: rgb(93, 95, 64);
 	}
-
+	&__parameter, &__information {
+		font-size: 1em;
+		font-weight: bold;
+		color: rgb(255, 251, 30);
+		&--counter {
+			font-size: 1em;
+		}
+	}
 	&__information {
 		&--none {
 			display: none;
@@ -109,60 +110,43 @@ $mobile: 736px;
 			color: red;
 		}
 	}
+
+
 	&__start-layer {
 		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: absolute;
-		// background-color: #171717;
-		background-image: url("../Images/bgImage.jpg");
-		background-position: center;
-		background-size: cover;
-		height: 100vh;
-		width: 100vw;
-	}
-
-	&__inner-wrapper {
-		display: flex;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		align-items: center;
 		flex-direction: column;
-		background-color: rgba(0, 0, 0, 0.822);
-		height: 80%;
-		border-radius: 20px;
-		padding: 30px;
-		@media (max-width: $mobile) {
-			justify-content: flex-start;
-			border-radius: 0;
-			height: 100vh;
-		}
+		min-height: 100vh;
+		width: 100%;
+		padding: 1.5em .5em;
+		background-color: rgba(0, 0, 0, 0.7);
 	}
-	&__buttonBox {
+	&__button-box {
 		display: flex;
 		flex-direction: column;
 	}
-
 	&__title {
-		font-size: 7em;
+		font-size: 3em;
 		font-weight: bold;
 		text-shadow: -.05em .05em .03em black;
 		color: rgb(255, 251, 30);
 		animation: startAnimation .3s ease-in both;
-		@media (max-width: $mobile) {
-			font-size: 5em;
-		}
 	}
-
 	&__subtitle {
-		font-size: 2.5em;
+		font-size: 1.3em;
 		font-weight: bold;
 		text-shadow: -.05em .05em .03em black;
 		color: rgb(255, 251, 30);
 		animation: startAnimation .3s .3s ease-in both;
+		margin-bottom: .5em;
+	}
+	&__parameter--counter {
+		animation: increaseVisibility 1s cubic-bezier(0.47, 0, 0.745, 0.715) both;
 	}
 }
 
-.board__gameOverCaption {
+.board__gameOver-caption, .board__winGame-caption {
 	position: absolute;
 	display: flex;
 	justify-content: center;
@@ -173,13 +157,19 @@ $mobile: 736px;
 	&::before {
 		content: "Game Over";
 		position: absolute;
-		font-size: 5em;
+		font-size: 3em;
 		color: rgb(255, 251, 30);
 		text-shadow: -.05em .05em 0.05em black;
 		animation: gameOverAnimation 4s cubic-bezier(0.77, 0, 0.175, 1) both;
 	}
 	&--none {
 		display: none;
+	}
+}
+.board__winGame-caption {
+	&::before {
+		content: "You Win!";
+		animation: winGameAnimation 4s cubic-bezier(0.77, 0, 0.175, 1) both;
 	}
 }
 
@@ -243,7 +233,7 @@ $mobile: 736px;
 		width: 100%;
 		height: 100%;
 		color: red;
-		font-size: 2em;
+		font-size: 1em;
 		padding-bottom: 5%;
 		transition: .1s;
 	}
@@ -263,16 +253,6 @@ $mobile: 736px;
 		transform: scale(1);
 	}
 }
-
-@keyframes showCounter {
-	from {
-		transform: scale(0);
-	}
-	to {
-		transform: scale(1);
-	}
-}
-
 @keyframes gameOverAnimation {
 	0% {
 		transform: scale(0) rotate(0deg);
@@ -292,12 +272,136 @@ $mobile: 736px;
 		transform: scale(0) rotate(0deg);
 	}
 }
+@keyframes winGameAnimation {
+	0% {
+		transform: scale(0) rotate(0deg);
+	}
 
+	40% {
+		transform: scale(1) rotate(360deg);
+		color: rgb(38, 228, 0);
+	}
+
+	60% {
+		transform: scale(1) rotate(360deg);
+		color: rgb(38, 228, 0);
+	}
+
+	to {
+		transform: scale(0) rotate(0deg);
+	}
+}
 @keyframes startAnimation {
 	from {
 		opacity: 0;
 	}
 	to {
 		opacity: 1;
+	}
+}
+
+
+@media (min-width: 450px) {
+	.game {
+		&__title {
+			font-size: 4em;
+		}
+		&__subtitle {
+			font-size: 1.6em;
+		}
+		&__board {
+			width: 350px;
+			height: 350px;
+		}
+		&__top-box {
+			width: 350px;
+			height: 35px;
+		}
+		&__parameter, &__information {
+			font-size: 1.3em;
+			&--counter {
+				font-size: 1.7em;
+			}
+		}
+	}
+
+	.missSquare {
+		&::before {
+			font-size: 1.3em;
+		}
+	}
+}
+
+@media (min-width: 768px) {
+	.game {
+		&__title {
+			font-size: 6em;
+		}
+		&__subtitle {
+			font-size: 2.2em;
+		}
+		&__board {
+			width: 450px;
+			height: 450px;
+		}
+		&__top-box {
+			width: 450px;
+			height: 45px;
+		}
+		&__parameter, &__information {
+			font-size: 1.6em;
+			&--counter {
+				font-size: 2.2em;
+			}
+		}
+		&__button-box {
+			&--board {
+				flex-direction: row;
+			}
+		}
+	}
+	.board__gameOver-caption, .board__winGame-caption {
+		&::before {
+			font-size: 4em;
+		}
+	}
+	.missSquare {
+		&::before {
+			font-size: 1.6em;
+		}
+	}
+}
+
+@media (min-width: 1200px) {
+	.game {
+		&__title {
+			font-size: 7em;
+		}
+		&__subtitle {
+			font-size: 2.7em;
+		}
+		&__board {
+			width: 500px;
+			height: 500px;
+		}
+		&__top-box {
+			width: 500px;
+			height: 50px;
+		}
+		&__parameter, &__information {
+			font-size: 1.8em;
+			&--counter {
+				font-size: 2.5em;
+			}
+		}
+		&__button-box {
+			flex-direction: row;
+		}
+	}
+
+	.board__gameOver-caption, .board__winGame-caption {
+		&::before {
+			font-size: 5em;
+		}
 	}
 }
