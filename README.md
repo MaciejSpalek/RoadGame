@@ -1,10 +1,11 @@
 # Road Game: chose your path or die! :laughing: :laughing: :laughing:
 ***
-![page sreenshot](https://maciekspalek.github.io/RoadGame/cover.png)
+![page sreenshot](public/cover.png)
 ***
 
+
 # About the project :rocket:
-The Simple game created with React where AI creates the road for us and we have to remember parts of it and then remind by choosing parts of the road in order. The Game has three difficulty levels and each one has ten maps for completed.
+The Simple game developed based on React where AI creates the road for us and we have to remember parts of its and then remind by choosing parts of the road in order. The Game has three difficulty levels and each one has ten maps for completed.
 
 ***
 Link to the project ---> [Click](https://maciekspalek.github.io/RoadGame/)
