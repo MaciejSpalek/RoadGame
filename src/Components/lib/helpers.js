@@ -27,9 +27,8 @@ const isBusySquare = (firstSquare, roadArray, row, col) => {
 
 const getRandom = (board) => {
     return board[Math.round(Math.random() * 9)][
-      Math.round(Math.random() * 9)
+        Math.round(Math.random() * 9)
     ];
 }
 
 export { setDuration, getDirection, deleteLastArrayElement, setSquareDuration, isBusySquare, getRandom };
-// export default helpers;
