@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/RoadGame/static/css/main.9635b44d.chunk.css",
+    "main.js": "/RoadGame/static/js/main.9a89d863.chunk.js",
+    "main.js.map": "/RoadGame/static/js/main.9a89d863.chunk.js.map",
+    "runtime-main.js": "/RoadGame/static/js/runtime-main.0e1caf29.js",
+    "runtime-main.js.map": "/RoadGame/static/js/runtime-main.0e1caf29.js.map",
+    "static/js/2.2c08d55c.chunk.js": "/RoadGame/static/js/2.2c08d55c.chunk.js",
+    "static/js/2.2c08d55c.chunk.js.map": "/RoadGame/static/js/2.2c08d55c.chunk.js.map",
+    "index.html": "/RoadGame/index.html",
+    "precache-manifest.5ce89df54a6194e1900f3ea1293d1364.js": "/RoadGame/precache-manifest.5ce89df54a6194e1900f3ea1293d1364.js",
+    "service-worker.js": "/RoadGame/service-worker.js",
+    "static/css/main.9635b44d.chunk.css.map": "/RoadGame/static/css/main.9635b44d.chunk.css.map",
+    "static/js/2.2c08d55c.chunk.js.LICENSE.txt": "/RoadGame/static/js/2.2c08d55c.chunk.js.LICENSE.txt",
+    "static/media/App.scss": "/RoadGame/static/media/bgImage.606602c8.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0e1caf29.js",
+    "static/js/2.2c08d55c.chunk.js",
+    "static/css/main.9635b44d.chunk.css",
+    "static/js/main.9a89d863.chunk.js"
+  ]
+}
