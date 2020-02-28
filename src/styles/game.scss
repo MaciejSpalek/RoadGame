@@ -33,7 +33,7 @@
 		width: 100%;
 		padding: 1.5em .5em;
 		background-color: rgba(0, 0, 0, 0.8);
-	}	
+	}
 	&__board {
 		position: relative;
 		display: grid;
@@ -59,6 +59,7 @@
 		border: none;
 		font-size: 2em;
 		font-weight: bold;
+		line-height: 1.5rem;
 		color: rgb(255, 251, 30);
 		background-color: rgb(58, 1, 116);
 		border: 4px solid rgb(71, 0, 143);
@@ -88,12 +89,13 @@
 		border: 4px solid rgb(72, 0, 145);
 		color: rgb(93, 95, 64);
 	}
-	&__parameter, &__information {
+	&__parameter,
+	&__information {
 		font-size: 1em;
 		font-weight: bold;
-		color: rgb(255, 251, 30);
+		color: rgb(255, 251, 31);
 		&--counter {
-			font-size: 1em;
+			font-size: 0.6em;
 		}
 	}
 	&__information {
@@ -111,7 +113,6 @@
 		}
 	}
 
-
 	&__start-layer {
 		display: flex;
 		justify-content: space-evenly;
@@ -124,6 +125,8 @@
 	}
 	&__button-box {
 		display: flex;
+		padding: 0;
+		list-style: none;
 		flex-direction: column;
 	}
 	&__title {
@@ -146,7 +149,8 @@
 	}
 }
 
-.board__gameOver-caption, .board__winGame-caption {
+.board__gameOver-caption,
+.board__winGame-caption {
 	position: absolute;
 	display: flex;
 	justify-content: center;
@@ -192,7 +196,7 @@
 }
 
 .startSquare {
-	animation: increaseVisibility .5s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+	animation: increaseVisibility .3s cubic-bezier(0.47, 0, 0.745, 0.715) both;
 	background-color: rgb(255, 136, 0);
 	box-shadow: inset 0 0 4px 1.5px rgb(0, 0, 0);
 	&:hover {
@@ -200,7 +204,7 @@
 	}
 }
 .drawRoad {
-	animation: increaseVisibility .5s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+	animation: increaseVisibility .3s cubic-bezier(0.47, 0, 0.745, 0.715) both;
 	background-color: rgb(185, 236, 0);
 	box-shadow: inset 0 0 4px 1.5px rgb(0, 0, 0);
 	&:hover {
@@ -300,7 +304,6 @@
 	}
 }
 
-
 @media (min-width: 450px) {
 	.game {
 		&__title {
@@ -317,7 +320,8 @@
 			width: 350px;
 			height: 35px;
 		}
-		&__parameter, &__information {
+		&__parameter,
+		&__information {
 			font-size: 1.3em;
 			&--counter {
 				font-size: 1.7em;
@@ -348,7 +352,8 @@
 			width: 450px;
 			height: 45px;
 		}
-		&__parameter, &__information {
+		&__parameter,
+		&__information {
 			font-size: 1.6em;
 			&--counter {
 				font-size: 2.2em;
@@ -360,7 +365,8 @@
 			}
 		}
 	}
-	.board__gameOver-caption, .board__winGame-caption {
+	.board__gameOver-caption,
+	.board__winGame-caption {
 		&::before {
 			font-size: 4em;
 		}
@@ -388,10 +394,11 @@
 			width: 500px;
 			height: 50px;
 		}
-		&__parameter, &__information {
+		&__parameter,
+		&__information {
 			font-size: 1.8em;
 			&--counter {
-				font-size: 2.5em;
+				font-size: 2em;
 			}
 		}
 		&__button-box {
@@ -399,7 +406,8 @@
 		}
 	}
 
-	.board__gameOver-caption, .board__winGame-caption {
+	.board__gameOver-caption,
+	.board__winGame-caption {
 		&::before {
 			font-size: 5em;
 		}
