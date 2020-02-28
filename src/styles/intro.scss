@@ -1,0 +1,91 @@
+.introduction {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+	z-index: 999;
+	background-color: rgba(255, 255, 255, 0.3);
+	overflow: hidden;
+	color: rgba(255, 251, 31, 0.8);
+	&__wrapper {
+		position: relative;
+		margin: 4rem;
+		max-width: 65vw;
+		max-height: 95%;
+		border: 1px solid rgba(255, 251, 30, 0.7);
+		border-radius: 5px;
+		box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.25);
+		background-color: rgba(0, 0, 0, 1);
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
+	&__header {
+		padding: 1rem;
+	}
+	&__title {
+		font-size: 1.6rem;
+	}
+	&__propose {
+		font-weight: 600;
+		font-size: 1.2rem;
+	}
+	&__list {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-rows: repeat(2, 1fr);
+		grid-gap: 0.5rem;
+		padding: 0.5rem;
+		list-style: none;
+	}
+	&__item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	&__step {
+		font-weight: 600;
+		text-transform: uppercase;
+		margin-bottom: 0.5rem;
+	}
+	&__image {
+		height: 100%;
+		max-height: 270px;
+		max-width: 280px;
+		object-fit: cover;
+		border: 1px solid #fffb1e80;
+		border-radius: 5px;
+	}
+	&__description {
+		margin-top: 0.5rem;
+		width: 100%;
+		font-weight: 500;
+		letter-spacing: 1px;
+	}
+	&__button {
+		position: absolute;
+		right: 5%;
+		top: 2%;
+		background-color: rgb(0, 0, 0);
+		font-weight: 600;
+		padding: 0.5rem;
+		border: 1px transparent solid;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+	&__button-icon {
+		height: 40px;
+		transition: transform 0.2s ease-in;
+		&:hover {
+			transform: rotate(90deg);
+		}
+	}
+}
