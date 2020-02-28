@@ -98,10 +98,10 @@ $desktop: 1200px;
 		@media (max-width: $mobileS) and (orientation: landscape) {
 			max-width: 50%;
 		}
-		@media (min-width: $mobileXL) and (orientation: landscape) {
+		@media (min-width: $mobileL) and (orientation: portrait) {
 			max-width: 50%;
 		}
-		@media (min-width: $mobileL) and (orientation: portrait) {
+		@media (min-width: $mobileXL) and (orientation: landscape) {
 			max-width: 50%;
 		}
 	}
@@ -114,7 +114,7 @@ $desktop: 1200px;
 		@media (max-width: $mobileS) and (orientation: landscape) {
 			width: 60%;
 		}
-		@media (max-width: $mobileL) and (orientation: portrait) {
+		@media (min-width: $mobileL) and (orientation: portrait) {
 			width: 70%;
 		}
 		@media (min-width: $mobileXL) and (orientation: landscape) {

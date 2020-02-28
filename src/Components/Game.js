@@ -3,8 +3,8 @@ import Square from "./Square/Square";
 import classNames from "classnames";
 import { setDuration, getDirection, deleteLastArrayElement, setSquareDuration, isBusySquare, getRandom } from "./lib/helpers"
 import Counter from "./Counter/Counter";
-import ButtonOfLevel from "./ButtonOfLevel/ButtonOfLevel"
 import Intro from "./Intro/Intro"
+import StartLayer from "./StartLayer/StartLayer"
 
 class Game extends React.Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class Game extends React.Component {
     this.state = {
 
       // flags
+      isIntroVisible: false,
       isChangeLevelButtonDisabled: false,
       isStartLayerVisible: true,
       isCounterVisible: false,
@@ -48,9 +49,20 @@ class Game extends React.Component {
     this.checkRoad = this.checkRoad.bind(this)
   }
   componentDidMount() {
+    this.ifUserWasOnSite()
     this.setState({
       board: this.createBoard(),
     });
+  }
+  ifUserWasOnSite() {
+    if (localStorage.getItem("RoadGameToken")) {
+      return
+    } else {
+      localStorage.setItem("RoadGameToken", "RoadGameToken")
+      this.setState({
+        isIntroVisible: !this.state.isIntroVisible
+      })
+    }
   }
   createBoard() {
     let list = [];
@@ -406,6 +418,11 @@ class Game extends React.Component {
     })
     this.cleanStateOfGame();
   }
+  handleToggleIntro = () => {
+    this.setState({
+      isIntroVisible: !this.state.isIntroVisible
+    })
+  }
   renderBoard() {
     const {
       firstSquare,
@@ -447,6 +464,7 @@ class Game extends React.Component {
       amountOfLives,
       isStartLayerVisible,
       isChangeLevelButtonDisabled,
+      isIntroVisible,
       counterTime
     } = this.state;
 
@@ -456,49 +474,17 @@ class Game extends React.Component {
       "game__information game__information--miss": this.state.topBoxInformation === "Miss!",
       "game__information game__information--none": this.state.topBoxInformation === "",
     })
-
-    const Easy = "Easy"
-    const Normal = "Normal"
-    const Expert = "Expert"
-
     return (
       <>
-        <Intro />
+        {isIntroVisible && <Intro handleToggleIntro={this.handleToggleIntro} />}
         <div className="game">
-          {isStartLayerVisible ? (
-            <div className="game__start-layer">
-              <div>
-                <h1 className="game__title">Road Game</h1>
-                <p className="game__subtitle">Chose your path or die!</p>
-              </div>
-              <ul className="game__button-box">
-                <ButtonOfLevel
-                  handleClick={this.setDifficultyLevel}
-                  nameLevel={Easy}
-                  amountOfSquares={3}
-                  time={800}
-                  amountOfLives={15}
-                  counterTime={4}
-                />
-                <ButtonOfLevel
-                  handleClick={this.setDifficultyLevel}
-                  nameLevel={Normal}
-                  amountOfSquares={6}
-                  time={400}
-                  amountOfLives={10}
-                  counterTime={3}
-                />
-                <ButtonOfLevel
-                  handleClick={this.setDifficultyLevel}
-                  nameLevel={Expert}
-                  amountOfSquares={9}
-                  time={200}
-                  amountOfLives={5}
-                  counterTime={2}
-                />
-              </ul>
-            </div>
-          ) : (
+          {isStartLayerVisible ?
+            (
+              <StartLayer
+                setDifficultyLevel={this.setDifficultyLevel}
+                handleToggleIntro={this.handleToggleIntro}
+              />
+            ) : (
               <div className="game__board-layer">
                 <div className="game__board-wrapper">
                   <div className="game__top-box">
@@ -512,7 +498,7 @@ class Game extends React.Component {
                     <span className={isWinGame ? "board__winGame-caption" : "board__winGame-caption--none"}></span>
                     {this.renderBoard()}
                   </div>
-                </div>
+                </div >
                 <div className="game__button-box game__button-box--board">
                   <button
                     className={isStartButtonDisabled ? "game__button game__button--disabled" : "game__button"}
@@ -528,8 +514,9 @@ class Game extends React.Component {
                     Change level
             </button>
                 </div>
-              </div>
-            )}
+              </div >
+            )
+          }
         </div >
       </>
     );
