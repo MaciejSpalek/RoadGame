@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/RoadGame/precache-manifest.5ce89df54a6194e1900f3ea1293d1364.js"
+  "/RoadGame/precache-manifest.9dcbcd46991a50032c7dd1239910fd36.js"
 );
 
 self.addEventListener('message', (event) => {

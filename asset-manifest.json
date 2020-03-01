@@ -1,23 +1,28 @@
 {
   "files": {
-    "main.css": "/RoadGame/static/css/main.9635b44d.chunk.css",
-    "main.js": "/RoadGame/static/js/main.9a89d863.chunk.js",
-    "main.js.map": "/RoadGame/static/js/main.9a89d863.chunk.js.map",
+    "main.css": "/RoadGame/static/css/main.854c48eb.chunk.css",
+    "main.js": "/RoadGame/static/js/main.a99c51be.chunk.js",
+    "main.js.map": "/RoadGame/static/js/main.a99c51be.chunk.js.map",
     "runtime-main.js": "/RoadGame/static/js/runtime-main.0e1caf29.js",
     "runtime-main.js.map": "/RoadGame/static/js/runtime-main.0e1caf29.js.map",
-    "static/js/2.2c08d55c.chunk.js": "/RoadGame/static/js/2.2c08d55c.chunk.js",
-    "static/js/2.2c08d55c.chunk.js.map": "/RoadGame/static/js/2.2c08d55c.chunk.js.map",
+    "static/js/2.f037fa6b.chunk.js": "/RoadGame/static/js/2.f037fa6b.chunk.js",
+    "static/js/2.f037fa6b.chunk.js.map": "/RoadGame/static/js/2.f037fa6b.chunk.js.map",
     "index.html": "/RoadGame/index.html",
-    "precache-manifest.5ce89df54a6194e1900f3ea1293d1364.js": "/RoadGame/precache-manifest.5ce89df54a6194e1900f3ea1293d1364.js",
+    "precache-manifest.9dcbcd46991a50032c7dd1239910fd36.js": "/RoadGame/precache-manifest.9dcbcd46991a50032c7dd1239910fd36.js",
     "service-worker.js": "/RoadGame/service-worker.js",
-    "static/css/main.9635b44d.chunk.css.map": "/RoadGame/static/css/main.9635b44d.chunk.css.map",
-    "static/js/2.2c08d55c.chunk.js.LICENSE.txt": "/RoadGame/static/js/2.2c08d55c.chunk.js.LICENSE.txt",
-    "static/media/App.scss": "/RoadGame/static/media/bgImage.606602c8.jpg"
+    "static/css/main.854c48eb.chunk.css.map": "/RoadGame/static/css/main.854c48eb.chunk.css.map",
+    "static/js/2.f037fa6b.chunk.js.LICENSE.txt": "/RoadGame/static/js/2.f037fa6b.chunk.js.LICENSE.txt",
+    "static/media/App.scss": "/RoadGame/static/media/bgImage.606602c8.jpg",
+    "static/media/close.svg": "/RoadGame/static/media/close.679c3916.svg",
+    "static/media/step_1.png": "/RoadGame/static/media/step_1.98d4a8f4.png",
+    "static/media/step_2.png": "/RoadGame/static/media/step_2.c9a01342.png",
+    "static/media/step_3.png": "/RoadGame/static/media/step_3.b351b6c7.png",
+    "static/media/step_4.png": "/RoadGame/static/media/step_4.1364df59.png"
   },
   "entrypoints": [
     "static/js/runtime-main.0e1caf29.js",
-    "static/js/2.2c08d55c.chunk.js",
-    "static/css/main.9635b44d.chunk.css",
-    "static/js/main.9a89d863.chunk.js"
+    "static/js/2.f037fa6b.chunk.js",
+    "static/css/main.854c48eb.chunk.css",
+    "static/js/main.a99c51be.chunk.js"
   ]
 }
