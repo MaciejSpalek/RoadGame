@@ -1,0 +1,148 @@
+// View
+
+$mobileS: 736px;
+$mobileL: 768px;
+$mobileXL: 812px;
+$tablet: 1024px;
+$desktop: 1200px;
+
+.introduction {
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100vw;
+	z-index: 999;
+	background-color: rgba(10, 10, 10, 0.945);
+	overflow: hidden;
+	color: rgba(255, 251, 31, 0.8);
+	&__wrapper {
+		position: relative;
+		margin: 0 1rem 0 1rem;
+		max-height: 95%;
+		max-width: 1200px;
+		border: 1px solid rgba(255, 251, 30, 0.7);
+		border-radius: 5px;
+		box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.25);
+		background-color: rgba(0, 0, 0, 1);
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		&::-webkit-scrollbar {
+			display: none;
+		}
+		@media (min-width: $desktop) {
+			margin: 0;
+			max-height: 95%;
+		}
+	}
+	&__header {
+		margin-top: 2.5rem;
+		margin-bottom: 1rem;
+		padding: 1rem;
+		@media (min-width: $desktop) {
+			margin: 0;
+		}
+	}
+	&__title {
+		font-size: 1.6rem;
+		margin-bottom: 0.5rem;
+		@media (min-width: $desktop) {
+			margin-bottom: 0;
+		}
+	}
+	&__propose {
+		width: 100%;
+		font-weight: 600;
+		font-size: 1.2rem;
+	}
+	&__list {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		grid-template-rows: repeat(1, 1fr);
+		grid-gap: 1rem;
+		padding: 0.5rem;
+		padding-bottom: 1rem;
+		list-style: none;
+		@media (min-width: $tablet) {
+			grid-template-columns: repeat(2, 1fr);
+			grid-template-rows: repeat(2, 1fr);
+		}
+	}
+	&__item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 1rem;
+		@media (min-width: $desktop) {
+			margin-bottom: 0;
+		}
+	}
+	&__step {
+		font-weight: 600;
+		font-size: 1.2rem;
+		text-transform: uppercase;
+		margin-bottom: 0.5rem;
+	}
+	&__image {
+		height: 100%;
+		max-width: 100%;
+		max-height: 220px;
+		object-fit: contain;
+		border: 1px solid #fffb1e80;
+		border-radius: 5px;
+		@media (max-width: $mobileS) and (orientation: landscape) {
+			max-width: 50%;
+		}
+		@media (min-width: $mobileL) and (orientation: portrait) {
+			max-width: 50%;
+		}
+		@media (min-width: $mobileXL) and (orientation: landscape) {
+			max-width: 50%;
+		}
+	}
+
+	&__description {
+		margin-top: 0.5rem;
+		width: 100%;
+		font-weight: 500;
+		letter-spacing: 1px;
+		@media (max-width: $mobileS) and (orientation: landscape) {
+			width: 60%;
+		}
+		@media (min-width: $mobileL) and (orientation: portrait) {
+			width: 70%;
+		}
+		@media (min-width: $mobileXL) and (orientation: landscape) {
+			width: 60%;
+		}
+		@media (min-width: $tablet) {
+			width: 70%;
+		}
+		@media (min-width: $desktop) {
+			width: 90%;
+		}
+	}
+	&__button {
+		position: absolute;
+		right: .5em;
+		top: .5em;
+		background-color: rgb(0, 0, 0);
+		font-weight: 600;
+		padding: 0.5rem;
+		border: 1px transparent solid;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+	&__button-icon {
+		height: 30px;
+		transition: transform 0.2s ease-in;
+		&:hover {
+			transform: rotate(90deg);
+		}
+	}
+}
