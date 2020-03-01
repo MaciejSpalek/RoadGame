@@ -9,31 +9,33 @@ import close from "../../Images/close.svg"
 export default function Intro({ handleToggleIntro }) {
     return (
         <div className="introduction">
-            <div className="introduction__wrapper">
+            <div className="introduction__wrapper scroll">
                 <header className="introduction__header">
                     <h3 className="introduction__title">Hello in RoadGame</h3>
-                    <span className="introduction__propose">Look at the simple introduction for the game.</span>
+                    <span className="introduction__propose">Don't you know what's going on?</span>
+                    <br></br>
+                    <span className="introduction__propose">So come with me...</span>
                 </header>
                 <ul className="introduction__list">
                     <li className="introduction__item">
                         <span className="introduction__step">Step 1</span>
                         <img className="introduction__image" src={step_1} alt="introduction_image" />
-                        <p className="introduction__description">In the beginning, choose the game level but remember if you change difficulty level during the game you lose the current gameplay.</p>
+                        <p className="introduction__description">Firstly, choose one game level.</p>
                     </li>
                     <li className="introduction__item">
                         <span className="introduction__step">Step 2</span>
                         <img className="introduction__image" src={step_2} alt="introduction_image" />
-                        <p className="introduction__description">OK! Click start and look at the board where AI drawing road and remember in order road parts</p>
+                        <p className="introduction__description">Click start and try to remember whole road in correct order.</p>
                     </li>
                     <li className="introduction__item">
                         <span className="introduction__step">Step 3</span>
                         <img className="introduction__image" src={step_3} alt="introduction_image" />
-                        <p className="introduction__description">Next, click in order parts of the road. Warning! If you miss or click in not order, you lose lives</p>
+                        <p className="introduction__description">Click in the consecutive parts of the road. Warning! If you miss or click in incorrect order, you lose one life.</p>
                     </li>
                     <li className="introduction__item">
                         <span className="introduction__step">Step 4</span>
                         <img className="introduction__image" src={step_4} alt="introduction_image" />
-                        <p className="introduction__description">If you click in order all of the road parts, you are going to the next board with one additional part of the road. All levels have ten boards level. If you win all levels you are an expert and you don't need to eat nuts! Have fun</p>
+                        <p className="introduction__description">If everything goes well, you're gonna go to the next board with additional parts of the road. If you finish all ten boards on three different difficulty levels you'll become an expert and you don't need to eat nuts! Have fun!</p>
                     </li>
                 </ul>
                 <button onClick={() => handleToggleIntro()} className="introduction__button"><img className="introduction__button-icon" src={close} alt="close-icon"></img></button>

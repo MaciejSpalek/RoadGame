@@ -5,6 +5,8 @@ import { setDuration, getDirection, deleteLastArrayElement, setSquareDuration, i
 import Counter from "./Counter/Counter";
 import Intro from "./Intro/Intro"
 import StartLayer from "./StartLayer/StartLayer"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 class Game extends React.Component {
   constructor(props) {
@@ -12,12 +14,12 @@ class Game extends React.Component {
     this.state = {
 
       // flags
-      isIntroVisible: false,
       isChangeLevelButtonDisabled: false,
+      isStartButtonDisabled: true,
       isStartLayerVisible: true,
       isCounterVisible: false,
       areSquaresLocked: true,
-      isStartButtonDisabled: true,
+      isIntroVisible: false,
       isDeletingMiss: false,
       isBusyArray: false,
       isGameOver: false,
@@ -30,11 +32,12 @@ class Game extends React.Component {
       amountOfSquares: 3,
       amountOfLives: 15,
       firstSquare: null,
+      counterTime: 5,
       dimension: 10,
       time: 100,
       level: 1,
       miss: 0,
-      counterTime: 5,
+      
 
       // arrays
       clickedRoad: [],
@@ -491,7 +494,10 @@ class Game extends React.Component {
                     <span className="game__parameter">Board {level}</span>
                     {isCounterVisible ? <Counter counterTime={counterTime} /> : false}
                     <span className={informationClass}> {topBoxInformation}</span>
-                    <span className="game__parameter">&#10084; {amountOfLives - miss} </span>
+                    <span className="game__parameter">
+                        <FontAwesomeIcon icon={faHeart} className="heartIcon"/>
+                       {amountOfLives - miss} 
+                    </span>
                   </div>
                   <div className="game__board">
                     <span className={isGameOver ? "board__gameOver-caption" : "board__gameOver-caption--none"}></span>

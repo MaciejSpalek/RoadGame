@@ -19,21 +19,21 @@ export default function StartLayer({ setDifficultyLevel, handleToggleIntro }) {
                     amountOfSquares={3}
                     time={800}
                     amountOfLives={15}
-                    counterTime={4}
+                    counterTime={6}
                 />
                 <ButtonOfLevel
                     handleClick={setDifficultyLevel}
                     nameLevel={Normal}
                     amountOfSquares={6}
-                    time={400}
+                    time={600}
                     amountOfLives={10}
-                    counterTime={3}
+                    counterTime={4}
                 />
                 <ButtonOfLevel
                     handleClick={setDifficultyLevel}
                     nameLevel={Expert}
                     amountOfSquares={9}
-                    time={200}
+                    time={300}
                     amountOfLives={5}
                     counterTime={2}
                 />
@@ -41,7 +41,7 @@ export default function StartLayer({ setDifficultyLevel, handleToggleIntro }) {
             <button
                 onClick={() => handleToggleIntro()}
                 className="game__intro-button game__button">
-                Introduction
+                Intro
             </button>
         </div>
     )
